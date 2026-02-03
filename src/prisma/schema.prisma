@@ -1,0 +1,291 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SystemRole {
+  ADMIN
+  USER
+}
+
+enum ProjectRole {
+  ADMIN
+  TEAM_LEAD
+  PM
+  MEMBER
+}
+
+enum ProjectStatus {
+  PLANNING
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  CANCELLED
+}
+
+enum ProjectInviteStatus {
+  PENDING
+  ACCEPTED
+  EXPRIRED
+}
+
+enum TaskStatus {
+  TODO
+  INPROGRESS
+  REVIEW
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ApprovalType {
+  ANY // Bất kỳ reviewer nào approve thì sẽ set task được hoàn thành
+  ALL // Tất cả reviewer approve thì task mới được hoàn thành
+  MAJORITY // approved > rejected hoàn thành và ngược lại
+}
+
+enum CollaboratorRole {
+  WATCHER
+  COLLABORATOR
+}
+
+enum TaskApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum NotificationType {
+  TASKASSIGNED
+}
+
+enum NotificationEntityType {
+  TASK
+  PROJECT
+  COMMENT
+  FILE
+}
+
+model User {
+  id        String     @id @default(uuid())
+  phone     String?    @unique @db.VarChar(15)
+  email     String     @unique @db.VarChar(255)
+  password  String     @map("password") @db.VarChar(255)
+  fullName  String     @map("full_name") @db.VarChar(100)
+  avatarUrl String?    @map("avatar_url") @db.Text
+  googleId  String?    @unique @map("google_id") @db.VarChar(255)
+  role      SystemRole @default(USER)
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamp()
+  updateAt  DateTime   @updatedAt @map("updated_at") @db.Timestamp()
+
+  projects           Project[]          @relation("ProjectCreator")
+  projectMembers     ProjectMember[]
+  projectInvitesSent ProjectInvite[]    @relation("InviteSender")
+  projectInvitesUsed ProjectInvite[]    @relation("InviteUser")
+  tasks              Task[]             @relation("AssigneerTask")
+  taskCollaborators  TaskCollaborator[] @relation("Collaborator")
+  taskApprovals      TaskApproval[]     @relation("ReviewerTask")
+  comments           Comment[]
+  notifications      Notification[]
+  actorNotifications Notification[]     @relation("ActorNotification")
+
+  @@index([email])
+  @@map("users")
+}
+
+model Project {
+  id          String        @id @default(uuid())
+  name        String
+  description String
+  status      ProjectStatus @default(PLANNING)
+  startDate   DateTime      @map("start_date") @db.Date()
+  endDate     DateTime      @map("end_date") @db.Date()
+  createdBy   String        @map("created_by")
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamp()
+  updateAt    DateTime      @updatedAt @map("updated_at") @db.Timestamp()
+
+  creator User?           @relation("ProjectCreator", fields: [createdBy], references: [id], onDelete: SetNull)
+  members ProjectMember[]
+  invites ProjectInvite[]
+  tasks   Task[]
+
+  @@index([status])
+  @@index([startDate, endDate])
+  @@map("projects")
+}
+
+model ProjectMember {
+  id        String      @id @default(uuid())
+  projectId String      @map("project_id")
+  userId    String      @map("user_id")
+  role      ProjectRole
+  joinedAt  DateTime    @db.Timestamp()
+  createdAt DateTime    @default(now()) @map("created_at") @db.Timestamp()
+  updateAt  DateTime    @updatedAt @map("updated_at") @db.Timestamp()
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+  @@map("project_members")
+}
+
+model ProjectInvite {
+  id          String              @id @default(uuid())
+  projectId   String              @map("project_id")
+  invitedBy   String              @map("invited_by")
+  inviteToken String              @map("invite_token")
+  email       String              @unique @db.VarChar(255)
+  status      ProjectInviteStatus @default(PENDING)
+  usedBy      String?             @map("used_by")
+  usedAt      DateTime?           @map("used_at")
+  expiresAt   DateTime            @map("expiresAt")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  inviter User    @relation("InviteSender", fields: [invitedBy], references: [id], onDelete: Cascade)
+  user    User?   @relation("InviteUser", fields: [usedBy], references: [id])
+
+  @@index([inviteToken, status])
+  @@index([expiresAt])
+  @@map("project_invites")
+}
+
+model Task {
+  id                    String       @id @default(uuid())
+  projectId             String       @map("project_id")
+  title                 String
+  description           String
+  status                TaskStatus
+  priority              TaskPriority
+  assigneeId            String       @map("assignee_id")
+  parentTaskId          String?      @map("parent_task_id") // Task cha
+  isParent              Boolean      @default(false) @map("is_parent")
+  subTaskCount          Int          @default(0) @map("subtask_count")
+  completedSubTaskCount Int          @default(0) @map("completed_subtask_count")
+  approvalType          ApprovalType @map("approval_type")
+  approvalCount         Int          @map("approval_count") // Số lượng tối thiểu approve để done task
+  createdBy             String       @map("created_by")
+  startDate             DateTime     @map("start_date") @db.Date()
+  dueDate               DateTime     @map("due_date") @db.Date()
+  completedAt           DateTime?    @map("completed_at") @db.Timestamp()
+  createdAt             DateTime     @default(now()) @map("created_at") @db.Timestamp()
+  updateAt              DateTime     @updatedAt @map("updated_at") @db.Timestamp()
+
+  project       Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assigneer     User               @relation("AssigneerTask", fields: [assigneeId], references: [id], onDelete: Cascade)
+  parentTask    Task?              @relation("SubTasks", fields: [parentTaskId], references: [id], onDelete: Cascade)
+  subTasks      Task[]             @relation("SubTasks")
+  collaborators TaskCollaborator[]
+  attachments   TaskAttachment[]
+  approvals     TaskApproval[]
+  comments      Comment[]
+
+  @@index([projectId])
+  @@index([projectId, completedAt])
+  @@index([parentTaskId])
+  @@map("tasks")
+}
+
+model TaskCollaborator {
+  id     String           @id @default(uuid())
+  taskId String           @map("task_id")
+  userId String           @map("user_id")
+  role   CollaboratorRole
+  addAt  DateTime         @map("add_at") @db.Timestamp()
+
+  task Task @relation(fields: [taskId], references: [id])
+  user User @relation("Collaborator", fields: [userId], references: [id])
+
+  @@map("task_collaborators")
+}
+
+model TaskAttachment {
+  id         String   @id @default(uuid())
+  taskId     String   @map("task_id")
+  fileName   String   @map("file_name") @db.VarChar(255)
+  filePath   String   @map("file_path")
+  fileSize   Int      @map("file_size")
+  fileType   String   @map("file_type")
+  uploadedBy String   @map("uploaded_by")
+  uploadedAt DateTime @map("uploaded_at") @db.Timestamp()
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@map("task_attachments")
+}
+
+model TaskApproval {
+  id         String             @id @default(uuid())
+  taskId     String             @map("task_id")
+  reviewerId String             @map("reviewer_id")
+  status     TaskApprovalStatus
+  comments   String
+  reviewedAt DateTime           @map("reviewed_at") @db.Timestamp()
+
+  task     Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  reviewer User @relation("ReviewerTask", fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  @@map("task_approvals")
+}
+
+model Comment {
+  id              String    @id @default(uuid())
+  taskId          String    @map("task_id")
+  userId          String    @map("user_id")
+  parentCommentId String    @map("parent_comment_id")
+  content         String
+  isEdit          Boolean   @default(false) @map("is_edit")
+  editedAt        DateTime  @map("edited_at") @db.Timestamp()
+  isDeleted       Boolean   @default(false) @map("is_deleted")
+  deletedAt       DateTime? @map("deleted_at")
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamp()
+  updateAt        DateTime  @updatedAt @map("updated_at") @db.Timestamp()
+
+  task    Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent  Comment?  @relation("CommentReplies", fields: [parentCommentId], references: [id], onDelete: Cascade)
+  replies Comment[] @relation("CommentReplies")
+
+  @@index([taskId, deletedAt])
+  @@index([parentCommentId, deletedAt])
+  @@map("comments")
+}
+
+model Notification {
+  id         String                 @id @default(uuid())
+  userId     String                 @map("user_id")
+  type       NotificationType
+  title      String
+  message    String?
+  entityType NotificationEntityType @map("entity_type")
+  entityId   String                 @map("entity_id")
+  metadata   Json?
+  actorId    String?
+  isRead     Boolean                @default(false) @map("is_read")
+  readAt     DateTime?              @map("read_at") @db.Timestamp()
+  actionUrl  String?                @map("action_url")
+  createdAt  DateTime               @default(now()) @db.Timestamp()
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  actor User? @relation("ActorNotification", fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead, createdAt(sort: Desc)])
+  @@index([type])
+  @@index([entityType, entityId])
+  @@map("notifications")
+}

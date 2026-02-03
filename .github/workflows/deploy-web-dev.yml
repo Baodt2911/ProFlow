@@ -1,0 +1,91 @@
+---
+name: ⭐️ Deploy web dev
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [deploy-web-dev]
+
+env:
+  AWS_REGION: ap-southeast-1
+  AWS_ECR_REPOSITORY: vyn-core
+  IMAGE_TAG: ${{ github.sha }}
+
+jobs:
+  deploy:
+    name: Deploy to AWS ECS
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Debug
+        run: |
+          echo "AWS Key Length: ${#AWS_ACCESS_KEY_ID}"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker build \
+            --file src/Dockerfile \
+            --tag $ECR_REGISTRY/$AWS_ECR_REPOSITORY:$IMAGE_TAG \
+            src
+          docker push $ECR_REGISTRY/$AWS_ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$AWS_ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Install ecspresso
+        uses: kayac/ecspresso@v2
+
+      - name: Deploy with ecspresso
+        env:
+          ECR_REPOSITORY: ${{ env.AWS_ECR_REPOSITORY }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECS_TASK_ROLE_ARN: ${{ secrets.ECS_TASK_ROLE_ARN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SUBNET_ID1: ${{ secrets.SUBNET_ID1 }}
+          SUBNET_ID2: ${{ secrets.SUBNET_ID2 }}
+          SUBNET_ID3: ${{ secrets.SUBNET_ID3 }}
+          SECURITY_GROUP_IDS: ${{ secrets.SECURITY_GROUP_IDS }}
+          TARGET_GROUP_ARN: ${{ secrets.TARGET_GROUP_ARN }}
+          APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+        run: |
+          # Validate configuration first
+          ecspresso verify --config ecspresso/dev/ecspresso.yml
+
+          # Deploy the service
+          ecspresso deploy --config ecspresso/dev/ecspresso.yml --wait
+
+      - name: Rollback on failure
+        if: ${{ failure() }}
+        env:
+          ECR_REPOSITORY: ${{ env.AWS_ECR_REPOSITORY }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECS_TASK_ROLE_ARN: ${{ secrets.ECS_TASK_ROLE_ARN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SUBNET_ID1: ${{ secrets.SUBNET_ID1 }}
+          SUBNET_ID2: ${{ secrets.SUBNET_ID2 }}
+          SUBNET_ID3: ${{ secrets.SUBNET_ID3 }}
+          SECURITY_GROUP_IDS: ${{ secrets.SECURITY_GROUP_IDS }}
+          TARGET_GROUP_ARN: ${{ secrets.TARGET_GROUP_ARN }}
+          APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+        run: |
+          echo "Deployment failed, rolling back to previous version..."
+          ecspresso rollback --config ecspresso/dev/ecspresso.yml --wait
+
+      

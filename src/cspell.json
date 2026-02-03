@@ -1,0 +1,30 @@
+{
+  "version": "0.2",
+  "ignorePaths": [
+    "node_modules",
+    "tailwind.config.ts",
+    "dist",
+    "build",
+    "coverage",
+    "package-lock.json",
+    "yarn.lock"
+  ],
+  "words": [
+    "isbot",
+    "Pipeable",
+    "Idcard",
+    "Sider",
+    "mapbox",
+    "wrongpassword",
+    "correctpassword",
+    "languagedetector",
+    "hoverable",
+    "Popconfirm",
+    "newpassword",
+    "Upserted",
+    "upserts"
+  ],
+  "dictionaries": ["typescript", "html", "css"],
+  "language": "en",
+  "enableFiletypes": ["ts", "tsx", "md", "json"]
+}
