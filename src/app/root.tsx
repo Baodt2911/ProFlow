@@ -1,13 +1,18 @@
 import {
   isRouteErrorResponse,
   Links,
+  LoaderFunctionArgs,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useFetcher,
+  useLoaderData,
 } from "react-router";
-
+import { ConfigProvider, theme as themeAntd } from "antd";
+import antdReset from "antd/dist/reset.css?url";
 import type { Route } from "./+types/root";
+import { darkTheme, lightTheme } from "./config/theme";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -18,13 +23,23 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap",
   },
+  { rel: "stylesheet", href: antdReset },
 ];
+
+import { useEffect } from "react";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const cookie = request.headers.get("Cookie");
+  const theme = cookie?.includes("theme=dark") ? "dark" : "light";
+
+  return { theme };
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="vi">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -40,8 +55,42 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+function useSystemThemeSync() {
+  const fetcher = useFetcher();
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const listener = () => {
+      fetcher.submit(
+        { theme: media.matches ? "dark" : "light" },
+        { method: "post", action: "/set-theme" },
+      );
+    };
+
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, []);
+}
+
 export default function App() {
-  return <Outlet />;
+  useSystemThemeSync();
+  const { theme } = useLoaderData<typeof loader>();
+  console.log(theme);
+
+  const isDark = theme === "dark";
+  return (
+    <ConfigProvider
+      theme={{
+        algorithm: isDark
+          ? themeAntd.darkAlgorithm
+          : themeAntd.defaultAlgorithm,
+        token: isDark ? darkTheme.token : lightTheme.token,
+      }}
+    >
+      <Outlet />
+    </ConfigProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

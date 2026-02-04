@@ -88,6 +88,10 @@ export const UserScalarFieldEnum = {
   avatarUrl: 'avatarUrl',
   googleId: 'googleId',
   role: 'role',
+  isBlocked: 'isBlocked',
+  blockReason: 'blockReason',
+  blockedAt: 'blockedAt',
+  blockedBy: 'blockedBy',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
 } as const
