@@ -9,3 +9,9 @@ export type ApiResponse<T> = SuccessResponse<T> | ErrorResponse;
 export type NotificationType = "success" | "info" | "warning" | "error";
 
 export type ThemeMode = "light" | "dark";
+
+export type SystemRole = "ADMIN" | "USER";
+export type ActionData = {
+  error?: string;
+  success?: boolean;
+};

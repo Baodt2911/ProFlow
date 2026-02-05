@@ -14,8 +14,9 @@ import {
   Alert,
 } from "antd";
 import ROUTES from "~/constants/route";
-import { redirectIfAuthenticated } from "~/utils/authServer";
-export { registerAction as action } from "~/actions/register";
+import { redirectIfAuthenticated } from "~/utils/auth.server";
+import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
+export { registerAction as action } from "~/actions/registerAction";
 
 export const meta = () => {
   return [{ title: "Đăng ký" }];
@@ -40,52 +41,103 @@ export default function RegisterPage() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       }}
     >
       {actionData?.error && (
         <Alert
-          style={{ position: "fixed", top: 20, right: 20 }}
-          title={actionData?.error}
-          type="warning"
+          style={{
+            position: "fixed",
+            top: 20,
+            right: 20,
+            zIndex: 1000,
+            minWidth: 300,
+          }}
+          message={actionData.error}
+          type="error"
           showIcon
           closable
         />
       )}
-      <Card style={{ width: 360 }}>
-        <Typography.Title level={3} style={{ textAlign: "center" }}>
+
+      <Card
+        style={{
+          width: 420,
+          boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
+          borderRadius: 16,
+        }}
+      >
+        <Typography.Title
+          level={2}
+          style={{
+            textAlign: "center",
+            marginBottom: 32,
+            fontWeight: 600,
+          }}
+        >
           Đăng ký
         </Typography.Title>
 
         <RemixForm method="post">
           <Form layout="vertical" component={false}>
-            <Form.Item label="Tên" rules={[{ required: true }]}>
-              <Input name="fullName" />
+            <Form.Item
+              label="Họ và tên"
+              name="fullName"
+              rules={[{ required: true, message: "Vui lòng nhập họ tên" }]}
+            >
+              <Input
+                name="fullName"
+                size="large"
+                placeholder="Nhập họ và tên"
+              />
             </Form.Item>
 
-            <Form.Item label="Email" rules={[{ required: true }]}>
-              <Input name="email" />
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[
+                { required: true, message: "Vui lòng nhập email" },
+                { type: "email", message: "Email không hợp lệ" },
+              ]}
+            >
+              <Input
+                name="email"
+                size="large"
+                placeholder="example@email.com"
+              />
             </Form.Item>
 
-            <Form.Item label="Mật khẩu" rules={[{ required: true }]}>
-              <Input.Password name="password" />
+            <Form.Item
+              label="Mật khẩu"
+              name="password"
+              rules={[
+                { required: true, message: "Vui lòng nhập mật khẩu" },
+                { min: 6, message: "Mật khẩu tối thiểu 6 ký tự" },
+              ]}
+            >
+              <Input.Password
+                name="password"
+                size="large"
+                placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)"
+              />
             </Form.Item>
 
-            <Form.Item style={{ marginTop: 16 }}>
-              <Button type="primary" htmlType="submit" block>
+            <Form.Item style={{ marginBottom: 16 }}>
+              <Button type="primary" htmlType="submit" size="large" block>
                 Đăng ký
               </Button>
             </Form.Item>
           </Form>
         </RemixForm>
-        <Typography.Text>
-          Đã có tài khoản?{" "}
-          <Link
-            to={ROUTES.LOGIN}
-            className="ant-typography ant-typography-link"
-          >
-            Đăng nhập
-          </Link>
-        </Typography.Text>
+
+        <div style={{ textAlign: "center", marginTop: 16 }}>
+          <Typography.Text type="secondary">
+            Đã có tài khoản?{" "}
+            <Link to={ROUTES.LOGIN} style={{ fontWeight: 500 }}>
+              Đăng nhập ngay
+            </Link>
+          </Typography.Text>
+        </div>
       </Card>
     </div>
   );

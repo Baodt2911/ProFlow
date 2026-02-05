@@ -1,5 +1,5 @@
 import { ActionFunctionArgs } from "react-router";
-import { userService } from "~/services/userService";
+import { userService } from "~/services/user.service";
 
 export async function registerAction({ request }: ActionFunctionArgs) {
   try {
@@ -21,12 +21,6 @@ export async function registerAction({ request }: ActionFunctionArgs) {
         { status: 400 },
       );
     }
-    // const data = registerSchema.parse({
-    //   email: formData.get("email"),
-    //   password: formData.get("password"),
-    //   fullName: formData.get("fullName"),
-    // });
-
     await userService.register({
       fullName,
       email,

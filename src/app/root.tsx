@@ -4,10 +4,12 @@ import {
   LoaderFunctionArgs,
   Meta,
   Outlet,
+  redirect,
   Scripts,
   ScrollRestoration,
   useFetcher,
   useLoaderData,
+  useLocation,
 } from "react-router";
 import { ConfigProvider, theme as themeAntd } from "antd";
 import antdReset from "antd/dist/reset.css?url";
@@ -75,9 +77,13 @@ function useSystemThemeSync() {
 
 export default function App() {
   useSystemThemeSync();
-  const { theme } = useLoaderData<typeof loader>();
-  console.log(theme);
+  // const location = useLocation();
+  // console.log(location.pathname);
 
+  // if (!location.pathname === "/") {
+  //   redirect("/dashboard");
+  // }
+  const { theme } = useLoaderData<typeof loader>();
   const isDark = theme === "dark";
   return (
     <ConfigProvider

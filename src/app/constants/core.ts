@@ -2,9 +2,6 @@
  * Core constants used throughout the application
  */
 
-export type SystemRole = "ADMIN" | "USER";
-export type ProjectRole = "ADMIN" | "TEAM_LEAD" | "MEMBER" | "PM";
-
 export const PAGINATION = {
   DEFAULT_PAGE_SIZE: 10,
   MAX_PAGE_SIZE: 100,
