@@ -3,8 +3,15 @@ import {
   Links,
   Meta,
   Outlet,
+  redirect,
   Scripts,
   ScrollRestoration,
+<<<<<<< HEAD
+=======
+  useFetcher,
+  useLoaderData,
+  useLocation,
+>>>>>>> 49fb9a9 (Add feature management user)
 } from "react-router";
 
 import type { Route } from "./+types/root";
@@ -41,7 +48,31 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+<<<<<<< HEAD
   return <Outlet />;
+=======
+  useSystemThemeSync();
+  // const location = useLocation();
+  // console.log(location.pathname);
+
+  // if (!location.pathname === "/") {
+  //   redirect("/dashboard");
+  // }
+  const { theme } = useLoaderData<typeof loader>();
+  const isDark = theme === "dark";
+  return (
+    <ConfigProvider
+      theme={{
+        algorithm: isDark
+          ? themeAntd.darkAlgorithm
+          : themeAntd.defaultAlgorithm,
+        token: isDark ? darkTheme.token : lightTheme.token,
+      }}
+    >
+      <Outlet />
+    </ConfigProvider>
+  );
+>>>>>>> 49fb9a9 (Add feature management user)
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

@@ -2,6 +2,7 @@
  * Core constants used throughout the application
  */
 
+<<<<<<< HEAD
 export const ROLES = {
   ADMIN: "admin",
   USER: "user",
@@ -9,6 +10,8 @@ export const ROLES = {
 
 export type Role = (typeof ROLES)[keyof typeof ROLES];
 
+=======
+>>>>>>> 49fb9a9 (Add feature management user)
 export const PAGINATION = {
   DEFAULT_PAGE_SIZE: 10,
   MAX_PAGE_SIZE: 100,
