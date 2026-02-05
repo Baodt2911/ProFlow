@@ -82,16 +82,24 @@ enum NotificationEntityType {
 }
 
 model User {
-  id        String     @id @default(uuid())
-  phone     String?    @unique @db.VarChar(15)
-  email     String     @unique @db.VarChar(255)
-  password  String     @map("password") @db.VarChar(255)
-  fullName  String     @map("full_name") @db.VarChar(100)
-  avatarUrl String?    @map("avatar_url") @db.Text
-  googleId  String?    @unique @map("google_id") @db.VarChar(255)
-  role      SystemRole @default(USER)
-  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamp()
-  updateAt  DateTime   @updatedAt @map("updated_at") @db.Timestamp()
+  id          String     @id @default(uuid())
+  phone       String?    @unique @db.VarChar(15)
+  email       String     @unique @db.VarChar(255)
+  password    String     @map("password") @db.VarChar(255)
+  fullName    String     @map("full_name") @db.VarChar(100)
+  avatarUrl   String?    @map("avatar_url") @db.Text
+  googleId    String?    @unique @map("google_id") @db.VarChar(255)
+  role        SystemRole @default(USER)
+  isBlocked   Boolean    @default(false) @map("is_blocked")
+  blockReason String?    @map("block_reason")
+  blockedAt   DateTime?  @map("blocked_at") @db.Timestamp()
+  blockedBy   String?    @map("blocked_by")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp()
+  updateAt  DateTime @updatedAt @map("updated_at") @db.Timestamp()
+
+  blockedByUser User?  @relation("BlockedBy", fields: [blockedBy], references: [id])
+  blockedUsers  User[] @relation("BlockedBy")
 
   projects           Project[]          @relation("ProjectCreator")
   projectMembers     ProjectMember[]

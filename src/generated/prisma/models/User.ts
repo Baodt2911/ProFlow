@@ -33,6 +33,10 @@ export type UserMinAggregateOutputType = {
   avatarUrl: string | null
   googleId: string | null
   role: $Enums.SystemRole | null
+  isBlocked: boolean | null
+  blockReason: string | null
+  blockedAt: Date | null
+  blockedBy: string | null
   createdAt: Date | null
   updateAt: Date | null
 }
@@ -46,6 +50,10 @@ export type UserMaxAggregateOutputType = {
   avatarUrl: string | null
   googleId: string | null
   role: $Enums.SystemRole | null
+  isBlocked: boolean | null
+  blockReason: string | null
+  blockedAt: Date | null
+  blockedBy: string | null
   createdAt: Date | null
   updateAt: Date | null
 }
@@ -59,6 +67,10 @@ export type UserCountAggregateOutputType = {
   avatarUrl: number
   googleId: number
   role: number
+  isBlocked: number
+  blockReason: number
+  blockedAt: number
+  blockedBy: number
   createdAt: number
   updateAt: number
   _all: number
@@ -74,6 +86,10 @@ export type UserMinAggregateInputType = {
   avatarUrl?: true
   googleId?: true
   role?: true
+  isBlocked?: true
+  blockReason?: true
+  blockedAt?: true
+  blockedBy?: true
   createdAt?: true
   updateAt?: true
 }
@@ -87,6 +103,10 @@ export type UserMaxAggregateInputType = {
   avatarUrl?: true
   googleId?: true
   role?: true
+  isBlocked?: true
+  blockReason?: true
+  blockedAt?: true
+  blockedBy?: true
   createdAt?: true
   updateAt?: true
 }
@@ -100,6 +120,10 @@ export type UserCountAggregateInputType = {
   avatarUrl?: true
   googleId?: true
   role?: true
+  isBlocked?: true
+  blockReason?: true
+  blockedAt?: true
+  blockedBy?: true
   createdAt?: true
   updateAt?: true
   _all?: true
@@ -186,6 +210,10 @@ export type UserGroupByOutputType = {
   avatarUrl: string | null
   googleId: string | null
   role: $Enums.SystemRole
+  isBlocked: boolean
+  blockReason: string | null
+  blockedAt: Date | null
+  blockedBy: string | null
   createdAt: Date
   updateAt: Date
   _count: UserCountAggregateOutputType | null
@@ -220,8 +248,14 @@ export type UserWhereInput = {
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
   googleId?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumSystemRoleFilter<"User"> | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFilter<"User"> | boolean
+  blockReason?: Prisma.StringNullableFilter<"User"> | string | null
+  blockedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  blockedBy?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updateAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  blockedByUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  blockedUsers?: Prisma.UserListRelationFilter
   projects?: Prisma.ProjectListRelationFilter
   projectMembers?: Prisma.ProjectMemberListRelationFilter
   projectInvitesSent?: Prisma.ProjectInviteListRelationFilter
@@ -243,8 +277,14 @@ export type UserOrderByWithRelationInput = {
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
+  isBlocked?: Prisma.SortOrder
+  blockReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  blockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  blockedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
+  blockedByUser?: Prisma.UserOrderByWithRelationInput
+  blockedUsers?: Prisma.UserOrderByRelationAggregateInput
   projects?: Prisma.ProjectOrderByRelationAggregateInput
   projectMembers?: Prisma.ProjectMemberOrderByRelationAggregateInput
   projectInvitesSent?: Prisma.ProjectInviteOrderByRelationAggregateInput
@@ -269,8 +309,14 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   fullName?: Prisma.StringFilter<"User"> | string
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumSystemRoleFilter<"User"> | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFilter<"User"> | boolean
+  blockReason?: Prisma.StringNullableFilter<"User"> | string | null
+  blockedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  blockedBy?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updateAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  blockedByUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  blockedUsers?: Prisma.UserListRelationFilter
   projects?: Prisma.ProjectListRelationFilter
   projectMembers?: Prisma.ProjectMemberListRelationFilter
   projectInvitesSent?: Prisma.ProjectInviteListRelationFilter
@@ -292,6 +338,10 @@ export type UserOrderByWithAggregationInput = {
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
+  isBlocked?: Prisma.SortOrder
+  blockReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  blockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  blockedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -311,6 +361,10 @@ export type UserScalarWhereWithAggregatesInput = {
   avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumSystemRoleWithAggregatesFilter<"User"> | $Enums.SystemRole
+  isBlocked?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  blockReason?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  blockedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  blockedBy?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updateAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -324,8 +378,13 @@ export type UserCreateInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedByUser?: Prisma.UserCreateNestedOneWithoutBlockedUsersInput
+  blockedUsers?: Prisma.UserCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteCreateNestedManyWithoutInviterInput
@@ -347,8 +406,13 @@ export type UserUncheckedCreateInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  blockedBy?: string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutInviterInput
@@ -370,8 +434,13 @@ export type UserUpdateInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedByUser?: Prisma.UserUpdateOneWithoutBlockedUsersNestedInput
+  blockedUsers?: Prisma.UserUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUpdateManyWithoutInviterNestedInput
@@ -393,8 +462,13 @@ export type UserUncheckedUpdateInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  blockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedUsers?: Prisma.UserUncheckedUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedUpdateManyWithoutInviterNestedInput
@@ -416,6 +490,10 @@ export type UserCreateManyInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  blockedBy?: string | null
   createdAt?: Date | string
   updateAt?: Date | string
 }
@@ -429,6 +507,9 @@ export type UserUpdateManyMutationInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -442,8 +523,27 @@ export type UserUncheckedUpdateManyInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  blockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
+export type UserListRelationFilter = {
+  every?: Prisma.UserWhereInput
+  some?: Prisma.UserWhereInput
+  none?: Prisma.UserWhereInput
+}
+
+export type UserOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -455,6 +555,10 @@ export type UserCountOrderByAggregateInput = {
   avatarUrl?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  isBlocked?: Prisma.SortOrder
+  blockReason?: Prisma.SortOrder
+  blockedAt?: Prisma.SortOrder
+  blockedBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
 }
@@ -468,6 +572,10 @@ export type UserMaxOrderByAggregateInput = {
   avatarUrl?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  isBlocked?: Prisma.SortOrder
+  blockReason?: Prisma.SortOrder
+  blockedAt?: Prisma.SortOrder
+  blockedBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
 }
@@ -481,18 +589,37 @@ export type UserMinOrderByAggregateInput = {
   avatarUrl?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  isBlocked?: Prisma.SortOrder
+  blockReason?: Prisma.SortOrder
+  blockedAt?: Prisma.SortOrder
+  blockedBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updateAt?: Prisma.SortOrder
-}
-
-export type UserNullableScalarRelationFilter = {
-  is?: Prisma.UserWhereInput | null
-  isNot?: Prisma.UserWhereInput | null
 }
 
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserCreateNestedOneWithoutBlockedUsersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlockedUsersInput, Prisma.UserUncheckedCreateWithoutBlockedUsersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlockedUsersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedManyWithoutBlockedByUserInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlockedByUserInput, Prisma.UserUncheckedCreateWithoutBlockedByUserInput> | Prisma.UserCreateWithoutBlockedByUserInput[] | Prisma.UserUncheckedCreateWithoutBlockedByUserInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlockedByUserInput | Prisma.UserCreateOrConnectWithoutBlockedByUserInput[]
+  createMany?: Prisma.UserCreateManyBlockedByUserInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutBlockedByUserInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlockedByUserInput, Prisma.UserUncheckedCreateWithoutBlockedByUserInput> | Prisma.UserCreateWithoutBlockedByUserInput[] | Prisma.UserUncheckedCreateWithoutBlockedByUserInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlockedByUserInput | Prisma.UserCreateOrConnectWithoutBlockedByUserInput[]
+  createMany?: Prisma.UserCreateManyBlockedByUserInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -507,8 +634,54 @@ export type EnumSystemRoleFieldUpdateOperationsInput = {
   set?: $Enums.SystemRole
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserUpdateOneWithoutBlockedUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlockedUsersInput, Prisma.UserUncheckedCreateWithoutBlockedUsersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlockedUsersInput
+  upsert?: Prisma.UserUpsertWithoutBlockedUsersInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBlockedUsersInput, Prisma.UserUpdateWithoutBlockedUsersInput>, Prisma.UserUncheckedUpdateWithoutBlockedUsersInput>
+}
+
+export type UserUpdateManyWithoutBlockedByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlockedByUserInput, Prisma.UserUncheckedCreateWithoutBlockedByUserInput> | Prisma.UserCreateWithoutBlockedByUserInput[] | Prisma.UserUncheckedCreateWithoutBlockedByUserInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlockedByUserInput | Prisma.UserCreateOrConnectWithoutBlockedByUserInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutBlockedByUserInput | Prisma.UserUpsertWithWhereUniqueWithoutBlockedByUserInput[]
+  createMany?: Prisma.UserCreateManyBlockedByUserInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutBlockedByUserInput | Prisma.UserUpdateWithWhereUniqueWithoutBlockedByUserInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutBlockedByUserInput | Prisma.UserUpdateManyWithWhereWithoutBlockedByUserInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutBlockedByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlockedByUserInput, Prisma.UserUncheckedCreateWithoutBlockedByUserInput> | Prisma.UserCreateWithoutBlockedByUserInput[] | Prisma.UserUncheckedCreateWithoutBlockedByUserInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlockedByUserInput | Prisma.UserCreateOrConnectWithoutBlockedByUserInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutBlockedByUserInput | Prisma.UserUpsertWithWhereUniqueWithoutBlockedByUserInput[]
+  createMany?: Prisma.UserCreateManyBlockedByUserInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutBlockedByUserInput | Prisma.UserUpdateWithWhereUniqueWithoutBlockedByUserInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutBlockedByUserInput | Prisma.UserUpdateManyWithWhereWithoutBlockedByUserInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
 export type UserCreateNestedOneWithoutProjectsInput = {
@@ -657,6 +830,230 @@ export type UserUpdateOneWithoutActorNotificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutActorNotificationsInput, Prisma.UserUpdateWithoutActorNotificationsInput>, Prisma.UserUncheckedUpdateWithoutActorNotificationsInput>
 }
 
+export type UserCreateWithoutBlockedUsersInput = {
+  id?: string
+  phone?: string | null
+  email: string
+  password: string
+  fullName: string
+  avatarUrl?: string | null
+  googleId?: string | null
+  role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  createdAt?: Date | string
+  updateAt?: Date | string
+  blockedByUser?: Prisma.UserCreateNestedOneWithoutBlockedUsersInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutCreatorInput
+  projectMembers?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  projectInvitesSent?: Prisma.ProjectInviteCreateNestedManyWithoutInviterInput
+  projectInvitesUsed?: Prisma.ProjectInviteCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutAssigneerInput
+  taskCollaborators?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
+  taskApprovals?: Prisma.TaskApprovalCreateNestedManyWithoutReviewerInput
+  comments?: Prisma.CommentCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actorNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
+}
+
+export type UserUncheckedCreateWithoutBlockedUsersInput = {
+  id?: string
+  phone?: string | null
+  email: string
+  password: string
+  fullName: string
+  avatarUrl?: string | null
+  googleId?: string | null
+  role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  blockedBy?: string | null
+  createdAt?: Date | string
+  updateAt?: Date | string
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatorInput
+  projectMembers?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  projectInvitesSent?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutInviterInput
+  projectInvitesUsed?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneerInput
+  taskCollaborators?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  taskApprovals?: Prisma.TaskApprovalUncheckedCreateNestedManyWithoutReviewerInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actorNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type UserCreateOrConnectWithoutBlockedUsersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBlockedUsersInput, Prisma.UserUncheckedCreateWithoutBlockedUsersInput>
+}
+
+export type UserCreateWithoutBlockedByUserInput = {
+  id?: string
+  phone?: string | null
+  email: string
+  password: string
+  fullName: string
+  avatarUrl?: string | null
+  googleId?: string | null
+  role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  createdAt?: Date | string
+  updateAt?: Date | string
+  blockedUsers?: Prisma.UserCreateNestedManyWithoutBlockedByUserInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutCreatorInput
+  projectMembers?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  projectInvitesSent?: Prisma.ProjectInviteCreateNestedManyWithoutInviterInput
+  projectInvitesUsed?: Prisma.ProjectInviteCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutAssigneerInput
+  taskCollaborators?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
+  taskApprovals?: Prisma.TaskApprovalCreateNestedManyWithoutReviewerInput
+  comments?: Prisma.CommentCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actorNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
+}
+
+export type UserUncheckedCreateWithoutBlockedByUserInput = {
+  id?: string
+  phone?: string | null
+  email: string
+  password: string
+  fullName: string
+  avatarUrl?: string | null
+  googleId?: string | null
+  role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  createdAt?: Date | string
+  updateAt?: Date | string
+  blockedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutBlockedByUserInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatorInput
+  projectMembers?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  projectInvitesSent?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutInviterInput
+  projectInvitesUsed?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneerInput
+  taskCollaborators?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  taskApprovals?: Prisma.TaskApprovalUncheckedCreateNestedManyWithoutReviewerInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actorNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type UserCreateOrConnectWithoutBlockedByUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBlockedByUserInput, Prisma.UserUncheckedCreateWithoutBlockedByUserInput>
+}
+
+export type UserCreateManyBlockedByUserInputEnvelope = {
+  data: Prisma.UserCreateManyBlockedByUserInput | Prisma.UserCreateManyBlockedByUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type UserUpsertWithoutBlockedUsersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBlockedUsersInput, Prisma.UserUncheckedUpdateWithoutBlockedUsersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBlockedUsersInput, Prisma.UserUncheckedCreateWithoutBlockedUsersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBlockedUsersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBlockedUsersInput, Prisma.UserUncheckedUpdateWithoutBlockedUsersInput>
+}
+
+export type UserUpdateWithoutBlockedUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedByUser?: Prisma.UserUpdateOneWithoutBlockedUsersNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutCreatorNestedInput
+  projectMembers?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  projectInvitesSent?: Prisma.ProjectInviteUpdateManyWithoutInviterNestedInput
+  projectInvitesUsed?: Prisma.ProjectInviteUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutAssigneerNestedInput
+  taskCollaborators?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
+  taskApprovals?: Prisma.TaskApprovalUpdateManyWithoutReviewerNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actorNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBlockedUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  blockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatorNestedInput
+  projectMembers?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  projectInvitesSent?: Prisma.ProjectInviteUncheckedUpdateManyWithoutInviterNestedInput
+  projectInvitesUsed?: Prisma.ProjectInviteUncheckedUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneerNestedInput
+  taskCollaborators?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  taskApprovals?: Prisma.TaskApprovalUncheckedUpdateManyWithoutReviewerNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actorNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserUpsertWithWhereUniqueWithoutBlockedByUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBlockedByUserInput, Prisma.UserUncheckedUpdateWithoutBlockedByUserInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBlockedByUserInput, Prisma.UserUncheckedCreateWithoutBlockedByUserInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutBlockedByUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBlockedByUserInput, Prisma.UserUncheckedUpdateWithoutBlockedByUserInput>
+}
+
+export type UserUpdateManyWithWhereWithoutBlockedByUserInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutBlockedByUserInput>
+}
+
+export type UserScalarWhereInput = {
+  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  OR?: Prisma.UserScalarWhereInput[]
+  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  id?: Prisma.StringFilter<"User"> | string
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
+  email?: Prisma.StringFilter<"User"> | string
+  password?: Prisma.StringFilter<"User"> | string
+  fullName?: Prisma.StringFilter<"User"> | string
+  avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  googleId?: Prisma.StringNullableFilter<"User"> | string | null
+  role?: Prisma.EnumSystemRoleFilter<"User"> | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFilter<"User"> | boolean
+  blockReason?: Prisma.StringNullableFilter<"User"> | string | null
+  blockedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  blockedBy?: Prisma.StringNullableFilter<"User"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updateAt?: Prisma.DateTimeFilter<"User"> | Date | string
+}
+
 export type UserCreateWithoutProjectsInput = {
   id?: string
   phone?: string | null
@@ -666,8 +1063,13 @@ export type UserCreateWithoutProjectsInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedByUser?: Prisma.UserCreateNestedOneWithoutBlockedUsersInput
+  blockedUsers?: Prisma.UserCreateNestedManyWithoutBlockedByUserInput
   projectMembers?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteCreateNestedManyWithoutInviterInput
   projectInvitesUsed?: Prisma.ProjectInviteCreateNestedManyWithoutUserInput
@@ -688,8 +1090,13 @@ export type UserUncheckedCreateWithoutProjectsInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  blockedBy?: string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutBlockedByUserInput
   projectMembers?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutInviterInput
   projectInvitesUsed?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutUserInput
@@ -726,8 +1133,13 @@ export type UserUpdateWithoutProjectsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedByUser?: Prisma.UserUpdateOneWithoutBlockedUsersNestedInput
+  blockedUsers?: Prisma.UserUpdateManyWithoutBlockedByUserNestedInput
   projectMembers?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUpdateManyWithoutInviterNestedInput
   projectInvitesUsed?: Prisma.ProjectInviteUpdateManyWithoutUserNestedInput
@@ -748,8 +1160,13 @@ export type UserUncheckedUpdateWithoutProjectsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  blockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedUsers?: Prisma.UserUncheckedUpdateManyWithoutBlockedByUserNestedInput
   projectMembers?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedUpdateManyWithoutInviterNestedInput
   projectInvitesUsed?: Prisma.ProjectInviteUncheckedUpdateManyWithoutUserNestedInput
@@ -770,8 +1187,13 @@ export type UserCreateWithoutProjectMembersInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedByUser?: Prisma.UserCreateNestedOneWithoutBlockedUsersInput
+  blockedUsers?: Prisma.UserCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectCreateNestedManyWithoutCreatorInput
   projectInvitesSent?: Prisma.ProjectInviteCreateNestedManyWithoutInviterInput
   projectInvitesUsed?: Prisma.ProjectInviteCreateNestedManyWithoutUserInput
@@ -792,8 +1214,13 @@ export type UserUncheckedCreateWithoutProjectMembersInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  blockedBy?: string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatorInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutInviterInput
   projectInvitesUsed?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutUserInput
@@ -830,8 +1257,13 @@ export type UserUpdateWithoutProjectMembersInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedByUser?: Prisma.UserUpdateOneWithoutBlockedUsersNestedInput
+  blockedUsers?: Prisma.UserUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUpdateManyWithoutCreatorNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUpdateManyWithoutInviterNestedInput
   projectInvitesUsed?: Prisma.ProjectInviteUpdateManyWithoutUserNestedInput
@@ -852,8 +1284,13 @@ export type UserUncheckedUpdateWithoutProjectMembersInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  blockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedUsers?: Prisma.UserUncheckedUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatorNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedUpdateManyWithoutInviterNestedInput
   projectInvitesUsed?: Prisma.ProjectInviteUncheckedUpdateManyWithoutUserNestedInput
@@ -874,8 +1311,13 @@ export type UserCreateWithoutProjectInvitesSentInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedByUser?: Prisma.UserCreateNestedOneWithoutBlockedUsersInput
+  blockedUsers?: Prisma.UserCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   projectInvitesUsed?: Prisma.ProjectInviteCreateNestedManyWithoutUserInput
@@ -896,8 +1338,13 @@ export type UserUncheckedCreateWithoutProjectInvitesSentInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  blockedBy?: string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   projectInvitesUsed?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutUserInput
@@ -923,8 +1370,13 @@ export type UserCreateWithoutProjectInvitesUsedInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedByUser?: Prisma.UserCreateNestedOneWithoutBlockedUsersInput
+  blockedUsers?: Prisma.UserCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteCreateNestedManyWithoutInviterInput
@@ -945,8 +1397,13 @@ export type UserUncheckedCreateWithoutProjectInvitesUsedInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  blockedBy?: string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutInviterInput
@@ -983,8 +1440,13 @@ export type UserUpdateWithoutProjectInvitesSentInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedByUser?: Prisma.UserUpdateOneWithoutBlockedUsersNestedInput
+  blockedUsers?: Prisma.UserUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   projectInvitesUsed?: Prisma.ProjectInviteUpdateManyWithoutUserNestedInput
@@ -1005,8 +1467,13 @@ export type UserUncheckedUpdateWithoutProjectInvitesSentInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  blockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedUsers?: Prisma.UserUncheckedUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   projectInvitesUsed?: Prisma.ProjectInviteUncheckedUpdateManyWithoutUserNestedInput
@@ -1038,8 +1505,13 @@ export type UserUpdateWithoutProjectInvitesUsedInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedByUser?: Prisma.UserUpdateOneWithoutBlockedUsersNestedInput
+  blockedUsers?: Prisma.UserUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUpdateManyWithoutInviterNestedInput
@@ -1060,8 +1532,13 @@ export type UserUncheckedUpdateWithoutProjectInvitesUsedInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  blockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedUsers?: Prisma.UserUncheckedUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedUpdateManyWithoutInviterNestedInput
@@ -1082,8 +1559,13 @@ export type UserCreateWithoutTasksInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedByUser?: Prisma.UserCreateNestedOneWithoutBlockedUsersInput
+  blockedUsers?: Prisma.UserCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteCreateNestedManyWithoutInviterInput
@@ -1104,8 +1586,13 @@ export type UserUncheckedCreateWithoutTasksInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  blockedBy?: string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutInviterInput
@@ -1142,8 +1629,13 @@ export type UserUpdateWithoutTasksInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedByUser?: Prisma.UserUpdateOneWithoutBlockedUsersNestedInput
+  blockedUsers?: Prisma.UserUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUpdateManyWithoutInviterNestedInput
@@ -1164,8 +1656,13 @@ export type UserUncheckedUpdateWithoutTasksInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  blockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedUsers?: Prisma.UserUncheckedUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedUpdateManyWithoutInviterNestedInput
@@ -1186,8 +1683,13 @@ export type UserCreateWithoutTaskCollaboratorsInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedByUser?: Prisma.UserCreateNestedOneWithoutBlockedUsersInput
+  blockedUsers?: Prisma.UserCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteCreateNestedManyWithoutInviterInput
@@ -1208,8 +1710,13 @@ export type UserUncheckedCreateWithoutTaskCollaboratorsInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  blockedBy?: string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutInviterInput
@@ -1246,8 +1753,13 @@ export type UserUpdateWithoutTaskCollaboratorsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedByUser?: Prisma.UserUpdateOneWithoutBlockedUsersNestedInput
+  blockedUsers?: Prisma.UserUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUpdateManyWithoutInviterNestedInput
@@ -1268,8 +1780,13 @@ export type UserUncheckedUpdateWithoutTaskCollaboratorsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  blockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedUsers?: Prisma.UserUncheckedUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedUpdateManyWithoutInviterNestedInput
@@ -1290,8 +1807,13 @@ export type UserCreateWithoutTaskApprovalsInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedByUser?: Prisma.UserCreateNestedOneWithoutBlockedUsersInput
+  blockedUsers?: Prisma.UserCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteCreateNestedManyWithoutInviterInput
@@ -1312,8 +1834,13 @@ export type UserUncheckedCreateWithoutTaskApprovalsInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  blockedBy?: string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutInviterInput
@@ -1350,8 +1877,13 @@ export type UserUpdateWithoutTaskApprovalsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedByUser?: Prisma.UserUpdateOneWithoutBlockedUsersNestedInput
+  blockedUsers?: Prisma.UserUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUpdateManyWithoutInviterNestedInput
@@ -1372,8 +1904,13 @@ export type UserUncheckedUpdateWithoutTaskApprovalsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  blockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedUsers?: Prisma.UserUncheckedUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedUpdateManyWithoutInviterNestedInput
@@ -1394,8 +1931,13 @@ export type UserCreateWithoutCommentsInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedByUser?: Prisma.UserCreateNestedOneWithoutBlockedUsersInput
+  blockedUsers?: Prisma.UserCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteCreateNestedManyWithoutInviterInput
@@ -1416,8 +1958,13 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  blockedBy?: string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutInviterInput
@@ -1454,8 +2001,13 @@ export type UserUpdateWithoutCommentsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedByUser?: Prisma.UserUpdateOneWithoutBlockedUsersNestedInput
+  blockedUsers?: Prisma.UserUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUpdateManyWithoutInviterNestedInput
@@ -1476,8 +2028,13 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  blockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedUsers?: Prisma.UserUncheckedUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedUpdateManyWithoutInviterNestedInput
@@ -1498,8 +2055,13 @@ export type UserCreateWithoutNotificationsInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedByUser?: Prisma.UserCreateNestedOneWithoutBlockedUsersInput
+  blockedUsers?: Prisma.UserCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteCreateNestedManyWithoutInviterInput
@@ -1520,8 +2082,13 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  blockedBy?: string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutInviterInput
@@ -1547,8 +2114,13 @@ export type UserCreateWithoutActorNotificationsInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedByUser?: Prisma.UserCreateNestedOneWithoutBlockedUsersInput
+  blockedUsers?: Prisma.UserCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteCreateNestedManyWithoutInviterInput
@@ -1569,8 +2141,13 @@ export type UserUncheckedCreateWithoutActorNotificationsInput = {
   avatarUrl?: string | null
   googleId?: string | null
   role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  blockedBy?: string | null
   createdAt?: Date | string
   updateAt?: Date | string
+  blockedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutBlockedByUserInput
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatorInput
   projectMembers?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedCreateNestedManyWithoutInviterInput
@@ -1607,8 +2184,13 @@ export type UserUpdateWithoutNotificationsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedByUser?: Prisma.UserUpdateOneWithoutBlockedUsersNestedInput
+  blockedUsers?: Prisma.UserUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUpdateManyWithoutInviterNestedInput
@@ -1629,8 +2211,13 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  blockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedUsers?: Prisma.UserUncheckedUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedUpdateManyWithoutInviterNestedInput
@@ -1662,8 +2249,13 @@ export type UserUpdateWithoutActorNotificationsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedByUser?: Prisma.UserUpdateOneWithoutBlockedUsersNestedInput
+  blockedUsers?: Prisma.UserUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUpdateManyWithoutInviterNestedInput
@@ -1684,8 +2276,13 @@ export type UserUncheckedUpdateWithoutActorNotificationsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  blockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedUsers?: Prisma.UserUncheckedUpdateManyWithoutBlockedByUserNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatorNestedInput
   projectMembers?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   projectInvitesSent?: Prisma.ProjectInviteUncheckedUpdateManyWithoutInviterNestedInput
@@ -1697,12 +2294,99 @@ export type UserUncheckedUpdateWithoutActorNotificationsInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
+export type UserCreateManyBlockedByUserInput = {
+  id?: string
+  phone?: string | null
+  email: string
+  password: string
+  fullName: string
+  avatarUrl?: string | null
+  googleId?: string | null
+  role?: $Enums.SystemRole
+  isBlocked?: boolean
+  blockReason?: string | null
+  blockedAt?: Date | string | null
+  createdAt?: Date | string
+  updateAt?: Date | string
+}
+
+export type UserUpdateWithoutBlockedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedUsers?: Prisma.UserUpdateManyWithoutBlockedByUserNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutCreatorNestedInput
+  projectMembers?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  projectInvitesSent?: Prisma.ProjectInviteUpdateManyWithoutInviterNestedInput
+  projectInvitesUsed?: Prisma.ProjectInviteUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutAssigneerNestedInput
+  taskCollaborators?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
+  taskApprovals?: Prisma.TaskApprovalUpdateManyWithoutReviewerNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actorNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBlockedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blockedUsers?: Prisma.UserUncheckedUpdateManyWithoutBlockedByUserNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatorNestedInput
+  projectMembers?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  projectInvitesSent?: Prisma.ProjectInviteUncheckedUpdateManyWithoutInviterNestedInput
+  projectInvitesUsed?: Prisma.ProjectInviteUncheckedUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneerNestedInput
+  taskCollaborators?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  taskApprovals?: Prisma.TaskApprovalUncheckedUpdateManyWithoutReviewerNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actorNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutBlockedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumSystemRoleFieldUpdateOperationsInput | $Enums.SystemRole
+  isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 
 /**
  * Count Type UserCountOutputType
  */
 
 export type UserCountOutputType = {
+  blockedUsers: number
   projects: number
   projectMembers: number
   projectInvitesSent: number
@@ -1716,6 +2400,7 @@ export type UserCountOutputType = {
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  blockedUsers?: boolean | UserCountOutputTypeCountBlockedUsersArgs
   projects?: boolean | UserCountOutputTypeCountProjectsArgs
   projectMembers?: boolean | UserCountOutputTypeCountProjectMembersArgs
   projectInvitesSent?: boolean | UserCountOutputTypeCountProjectInvitesSentArgs
@@ -1736,6 +2421,13 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBlockedUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserWhereInput
 }
 
 /**
@@ -1818,8 +2510,14 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   avatarUrl?: boolean
   googleId?: boolean
   role?: boolean
+  isBlocked?: boolean
+  blockReason?: boolean
+  blockedAt?: boolean
+  blockedBy?: boolean
   createdAt?: boolean
   updateAt?: boolean
+  blockedByUser?: boolean | Prisma.User$blockedByUserArgs<ExtArgs>
+  blockedUsers?: boolean | Prisma.User$blockedUsersArgs<ExtArgs>
   projects?: boolean | Prisma.User$projectsArgs<ExtArgs>
   projectMembers?: boolean | Prisma.User$projectMembersArgs<ExtArgs>
   projectInvitesSent?: boolean | Prisma.User$projectInvitesSentArgs<ExtArgs>
@@ -1842,8 +2540,13 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   avatarUrl?: boolean
   googleId?: boolean
   role?: boolean
+  isBlocked?: boolean
+  blockReason?: boolean
+  blockedAt?: boolean
+  blockedBy?: boolean
   createdAt?: boolean
   updateAt?: boolean
+  blockedByUser?: boolean | Prisma.User$blockedByUserArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1855,8 +2558,13 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   avatarUrl?: boolean
   googleId?: boolean
   role?: boolean
+  isBlocked?: boolean
+  blockReason?: boolean
+  blockedAt?: boolean
+  blockedBy?: boolean
   createdAt?: boolean
   updateAt?: boolean
+  blockedByUser?: boolean | Prisma.User$blockedByUserArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -1868,12 +2576,18 @@ export type UserSelectScalar = {
   avatarUrl?: boolean
   googleId?: boolean
   role?: boolean
+  isBlocked?: boolean
+  blockReason?: boolean
+  blockedAt?: boolean
+  blockedBy?: boolean
   createdAt?: boolean
   updateAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phone" | "email" | "password" | "fullName" | "avatarUrl" | "googleId" | "role" | "createdAt" | "updateAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phone" | "email" | "password" | "fullName" | "avatarUrl" | "googleId" | "role" | "isBlocked" | "blockReason" | "blockedAt" | "blockedBy" | "createdAt" | "updateAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  blockedByUser?: boolean | Prisma.User$blockedByUserArgs<ExtArgs>
+  blockedUsers?: boolean | Prisma.User$blockedUsersArgs<ExtArgs>
   projects?: boolean | Prisma.User$projectsArgs<ExtArgs>
   projectMembers?: boolean | Prisma.User$projectMembersArgs<ExtArgs>
   projectInvitesSent?: boolean | Prisma.User$projectInvitesSentArgs<ExtArgs>
@@ -1886,12 +2600,18 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   actorNotifications?: boolean | Prisma.User$actorNotificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  blockedByUser?: boolean | Prisma.User$blockedByUserArgs<ExtArgs>
+}
+export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  blockedByUser?: boolean | Prisma.User$blockedByUserArgs<ExtArgs>
+}
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    blockedByUser: Prisma.$UserPayload<ExtArgs> | null
+    blockedUsers: Prisma.$UserPayload<ExtArgs>[]
     projects: Prisma.$ProjectPayload<ExtArgs>[]
     projectMembers: Prisma.$ProjectMemberPayload<ExtArgs>[]
     projectInvitesSent: Prisma.$ProjectInvitePayload<ExtArgs>[]
@@ -1912,6 +2632,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     avatarUrl: string | null
     googleId: string | null
     role: $Enums.SystemRole
+    isBlocked: boolean
+    blockReason: string | null
+    blockedAt: Date | null
+    blockedBy: string | null
     createdAt: Date
     updateAt: Date
   }, ExtArgs["result"]["user"]>
@@ -2308,6 +3032,8 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  blockedByUser<T extends Prisma.User$blockedByUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$blockedByUserArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  blockedUsers<T extends Prisma.User$blockedUsersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$blockedUsersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   projects<T extends Prisma.User$projectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   projectMembers<T extends Prisma.User$projectMembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$projectMembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   projectInvitesSent<T extends Prisma.User$projectInvitesSentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$projectInvitesSentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectInvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2355,6 +3081,10 @@ export interface UserFieldRefs {
   readonly avatarUrl: Prisma.FieldRef<"User", 'String'>
   readonly googleId: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'SystemRole'>
+  readonly isBlocked: Prisma.FieldRef<"User", 'Boolean'>
+  readonly blockReason: Prisma.FieldRef<"User", 'String'>
+  readonly blockedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly blockedBy: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updateAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -2606,6 +3336,10 @@ export type UserCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   data: Prisma.UserCreateManyInput | Prisma.UserCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -2676,6 +3410,10 @@ export type UserUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many Users to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -2742,6 +3480,49 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Users to delete.
    */
   limit?: number
+}
+
+/**
+ * User.blockedByUser
+ */
+export type User$blockedByUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * User.blockedUsers
+ */
+export type User$blockedUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+  orderBy?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[]
+  cursor?: Prisma.UserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
 }
 
 /**

@@ -539,10 +539,6 @@ export type EnumProjectInviteStatusFieldUpdateOperationsInput = {
   set?: $Enums.ProjectInviteStatus
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type ProjectInviteCreateWithoutInviterInput = {
   id?: string
   inviteToken: string
