@@ -14,4 +14,5 @@ export type SystemRole = "ADMIN" | "USER";
 export type ActionData = {
   error?: string;
   success?: boolean;
+  message?: string;
 };

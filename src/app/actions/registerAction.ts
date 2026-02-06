@@ -1,4 +1,4 @@
-import { ActionFunctionArgs } from "react-router";
+import { ActionFunctionArgs, data } from "react-router";
 import { userService } from "~/services/user.service";
 
 export async function registerAction({ request }: ActionFunctionArgs) {
@@ -9,14 +9,11 @@ export async function registerAction({ request }: ActionFunctionArgs) {
     const password = formData.get("password") as string;
 
     if (!fullName) {
-      return Response.json(
-        { error: "Tên không được để trống" },
-        { status: 400 },
-      );
+      return data({ error: "Tên không được để trống" }, { status: 400 });
     }
 
     if (!email || !password) {
-      return Response.json(
+      return data(
         { error: "Email và mật khẩu không được để trống" },
         { status: 400 },
       );
@@ -26,20 +23,17 @@ export async function registerAction({ request }: ActionFunctionArgs) {
       email,
       password,
     });
-    return Response.json({
+    return data({
       success: true,
       message: "Đăng ký thành công",
     });
   } catch (error: any) {
     if (error) {
-      return Response.json({ error: error.message }, { status: error.status });
+      return data({ error: error.message }, { status: error.status });
     }
 
     // fallback
     console.error(error);
-    return Response.json(
-      { error: "Có lỗi xảy ra, vui lòng thử lại" },
-      { status: 500 },
-    );
+    return data({ error: "Có lỗi xảy ra, vui lòng thử lại" }, { status: 500 });
   }
 }

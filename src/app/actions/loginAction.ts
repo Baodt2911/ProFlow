@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs } from "react-router";
-import { redirect } from "react-router";
+import { data, redirect } from "react-router";
 import { commitSession, getSession } from "~/lib/session";
 import { userService } from "~/services/user.service";
 import logger from "~/logger";
@@ -11,7 +11,7 @@ export async function loginAction({ request }: ActionFunctionArgs) {
     const password = formData.get("password") as string;
     console.log({ email, password });
     if (!email || !password) {
-      return Response.json(
+      return data(
         { error: "Email và mật khẩu không được để trống" },
         { status: 400 },
       );
@@ -19,7 +19,7 @@ export async function loginAction({ request }: ActionFunctionArgs) {
     const user = await userService.login({ email, password });
 
     if (user.isBlocked) {
-      return Response.json(
+      return data(
         {
           error: `Tài khoản của bạn đã bị khóa bởi ${user.blockedByUser?.fullName}`,
         },
@@ -37,14 +37,11 @@ export async function loginAction({ request }: ActionFunctionArgs) {
     }
   } catch (error: any) {
     if (error) {
-      return Response.json({ error: error.message }, { status: error.status });
+      return data({ error: error.message }, { status: error.status });
     }
 
     // fallback
     logger.error({ err: error }, "Error in login action");
-    return Response.json(
-      { error: "Có lỗi xảy ra, vui lòng thử lại" },
-      { status: 500 },
-    );
+    return data({ error: "Có lỗi xảy ra, vui lòng thử lại" }, { status: 500 });
   }
 }

@@ -1,8 +1,5 @@
 type PrismaModel<T> = {
-<<<<<<< HEAD
-=======
   findFirst: (args?: any) => Promise<T | null>;
->>>>>>> clean-management-user
   findUnique: (args: any) => Promise<T | null>;
   findMany: (args?: any) => Promise<T[]>;
   create: (args: any) => Promise<T>;
@@ -12,13 +9,6 @@ type PrismaModel<T> = {
 };
 
 export const baseRepository = <T>(model: PrismaModel<T>) => ({
-<<<<<<< HEAD
-  findById(id: number) {
-    return model.findUnique({ where: { id } });
-  },
-
-  findMany(args?: any) {
-=======
   findById(id: string) {
     return model.findUnique({ where: { id } });
   },
@@ -43,7 +33,6 @@ export const baseRepository = <T>(model: PrismaModel<T>) => ({
   },
 
   findAll(args?: any) {
->>>>>>> clean-management-user
     return model.findMany(args);
   },
 
@@ -51,19 +40,11 @@ export const baseRepository = <T>(model: PrismaModel<T>) => ({
     return model.create({ data });
   },
 
-<<<<<<< HEAD
-  update(id: number, data: any) {
-    return model.update({ where: { id }, data });
-  },
-
-  delete(id: number) {
-=======
   update(id: string, data: any) {
     return model.update({ where: { id }, data });
   },
 
   delete(id: string) {
->>>>>>> clean-management-user
     return model.delete({ where: { id } });
   },
 

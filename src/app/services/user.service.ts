@@ -1,15 +1,24 @@
 import { userRepository } from "~/repositories/userRepository";
 import bcrypt from "bcrypt";
 import { UserCreateInput } from "generated/prisma/models";
+import { prisma } from "~/lib/prisma";
 interface RegisterInput {
   fullName: string;
   email: string;
   password: string;
 }
+interface UpdateProfileInput {
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  avatarUrl: string;
+}
 interface LoginInput {
   email: string;
   password: string;
 }
+
 export const userService = {
   async register(input: RegisterInput) {
     const existingUser = await userRepository.findByEmail(input.email);
@@ -40,6 +49,10 @@ export const userService = {
     }
     const { password, googleId, ...other } = existingUser;
     return other;
+  },
+
+  async updateProfile(userId: string, data: Partial<UpdateProfileInput>) {
+    return userRepository.update(userId, data);
   },
 
   async deleteUser(adminId: string, userId: string) {
@@ -78,5 +91,26 @@ export const userService = {
       blockedBy: null,
       blockReason: null,
     });
+  },
+
+  async changePassword(
+    userId: string,
+    currentPassword: string,
+    newPassword: string,
+  ) {
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new Error("Người dùng không tồn tại");
+    }
+
+    const isPassword = await bcrypt.compare(currentPassword, user.password);
+    if (!isPassword) {
+      throw new Error("Mật khẩu hiện tại không đúng");
+    }
+
+    const salt = await bcrypt.genSalt(Number(process.env.BCRYPT_SALT_ROUNDS));
+    const hashPassword = await bcrypt.hash(newPassword, salt);
+
+    return userRepository.update(userId, { password: hashPassword });
   },
 };
