@@ -19,15 +19,16 @@ import {
   Input,
   Badge,
   message,
+  Form,
 } from "antd";
-import type { TableProps, PopconfirmProps } from "antd";
+import type { TableProps, FormInstance } from "antd";
 import { useEffect, useState } from "react";
 import {
-  Form,
   useActionData,
   useLoaderData,
   useSearchParams,
   useSubmit,
+  Form as RemixForm,
 } from "react-router";
 import UserForm from "~/components/Form/UserForm";
 import { DEFAULT_LIMIT, DEFAULT_PAGE } from "~/constants/core";
@@ -36,18 +37,23 @@ export { managementUserAction as action } from "~/actions/managementUserAction";
 export { managementUserLoader as loader } from "~/loaders/managementUserLoader";
 
 export const meta = () => {
-  return [{ title: "Quản lý người dùng" }];
+  return [{ title: "User Management" }];
 };
 
 export default function ManagementUser() {
   const actionData = useActionData<ActionData>() ?? {};
   const [messageApi, contextHolder] = message.useMessage();
+  const [form] = Form.useForm();
+
+  const onResetForm = (form: FormInstance<any>) => {
+    form.resetFields();
+  };
 
   useEffect(() => {
     if (actionData.success) {
       messageApi.open({
         type: "success",
-        content: "Thao tác thành công",
+        content: actionData.message || "Action successful",
       });
     }
     if (actionData.error) {
@@ -56,7 +62,9 @@ export default function ManagementUser() {
         content: actionData.error,
       });
     }
-  }, [actionData]);
+    onResetForm(form);
+    setIsModalBlockOpen(false);
+  }, [actionData, form, messageApi]);
   const { data, total } = useLoaderData();
   const {
     token: { colorBgBase },
@@ -88,7 +96,7 @@ export default function ManagementUser() {
 
   const columns: TableProps["columns"] = [
     {
-      title: "Trạng thái",
+      title: "Status",
       dataIndex: "isBlock",
       key: "isBlock",
       render: (_, record) => (
@@ -97,7 +105,7 @@ export default function ManagementUser() {
             status={record.isBlocked ? "error" : "success"}
             text={
               <Typography.Text type={record.isBlocked ? "danger" : "success"}>
-                {record.isBlocked ? "Bị khóa" : "Hoạt động"}
+                {record.isBlocked ? "Blocked" : "Active"}
               </Typography.Text>
             }
           />
@@ -105,7 +113,7 @@ export default function ManagementUser() {
       ),
     },
     {
-      title: "Họ và tên",
+      title: "Full Name",
       dataIndex: "fullName",
       key: "fullName",
       render: (text) => <Typography.Text strong>{text}</Typography.Text>,
@@ -116,7 +124,7 @@ export default function ManagementUser() {
       key: "email",
     },
     {
-      title: "Địa chỉ",
+      title: "Address",
       dataIndex: "address",
       key: "address",
     },
@@ -131,11 +139,11 @@ export default function ManagementUser() {
       ),
     },
     {
-      title: "Hành động",
+      title: "Actions",
       key: "action",
       render: (_, record) => (
         <Space size="small">
-          <Tooltip title="Sửa tài khoản">
+          <Tooltip title="Edit Account">
             <Button
               type="primary"
               icon={<EditOutlined />}
@@ -146,7 +154,7 @@ export default function ManagementUser() {
             />
           </Tooltip>
 
-          <Tooltip title={record.isBlocked ? "Mở khóa" : "Khóa tài khoản"}>
+          <Tooltip title={record.isBlocked ? "Unblock" : "Block account"}>
             <Button
               color="danger"
               variant="filled"
@@ -169,8 +177,8 @@ export default function ManagementUser() {
           </Tooltip>
 
           <Popconfirm
-            title="Xóa tài khoản"
-            description="Bạn có chắc chắn muốn xóa tài khoản này không?"
+            title="Delete Account"
+            description="Are you sure you want to delete this account?"
             onConfirm={() =>
               submit(
                 {
@@ -183,7 +191,7 @@ export default function ManagementUser() {
             okText="Yes"
             cancelText="No"
           >
-            <Tooltip title="Xóa tài khoản">
+            <Tooltip title="Delete Account">
               <Button
                 color="danger"
                 variant="filled"
@@ -199,34 +207,34 @@ export default function ManagementUser() {
     <>
       {contextHolder}
       <Modal
-        title="Cập nhật người dùng"
+        title="Update User"
         closable={{ "aria-label": "Custom Close Button" }}
         open={isModalFormOpen}
         onCancel={handleCancel}
         footer={null}
       >
-        <UserForm mode="update" data={selectUser} />
+        <UserForm mode="update" data={selectUser} form={form} />
       </Modal>
 
       <Modal
-        title="Khóa tài khoản"
+        title="Block Account"
         closable={{ "aria-label": "Custom Close Button" }}
         open={isModalBlockOpen}
         onCancel={() => setIsModalBlockOpen(false)}
         footer={null}
       >
-        <Form method="post">
+        <RemixForm method="post">
           <input type="hidden" name="action" value={"block"} />
           <input type="hidden" name="userId" value={selectUser.id} />
-          <Input size="large" name="reason" placeholder="Lý do khóa" />
+          <Input size="large" name="reason" placeholder="Reason for blocking" />
           <Button
             htmlType="submit"
             danger
             style={{ marginTop: 20, width: "100%" }}
           >
-            Khóa tài khoản
+            Block Account
           </Button>
-        </Form>
+        </RemixForm>
       </Modal>
       <Flex align="start" style={{ padding: 20, height: "100vh" }} gap="large">
         <Flex
@@ -241,10 +249,10 @@ export default function ManagementUser() {
           }}
         >
           <Typography.Title level={3} style={{ marginBottom: 24 }}>
-            Tạo tài khoản
+            Create Account
           </Typography.Title>
 
-          <UserForm mode="create" />
+          <UserForm mode="create" form={form} />
         </Flex>
 
         <Flex vertical style={{ flex: 2 }} gap={"large"}>

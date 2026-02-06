@@ -1,10 +1,10 @@
-import bcrypt from "bcrypt";
 import { SystemRole } from "generated/prisma/enums";
 import { ActionFunctionArgs, data } from "react-router";
 import logger from "~/logger";
 import { userRepository } from "~/repositories/userRepository";
 import { userService } from "~/services/user.service";
 import { requireAdmin } from "~/utils/auth.server";
+import { hashPassword } from "~/utils/hashPassword";
 
 export async function managementUserAction({ request }: ActionFunctionArgs) {
   const adminId = await requireAdmin(request);
@@ -48,7 +48,7 @@ const handleCreateUser = async (formData: FormData) => {
     );
     return data(
       {
-        error: "Thiếu các trường bắt buộc: tên, email và mật khẩu  là bắt buộc",
+        error: "Required fields: full name, email and password are mandatory",
       },
       { status: 400 },
     );
@@ -59,12 +59,11 @@ const handleCreateUser = async (formData: FormData) => {
       logger.warn({ email }, "User creation failed: email already exists");
       return data({ error: "Email already exists" }, { status: 400 });
     }
-    const salt = await bcrypt.genSalt(Number(process.env.BCRYPT_SALT_ROUNDS));
-    const hashPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await hashPassword(password);
     const user = await userRepository.create({
       fullName,
       email,
-      password: hashPassword,
+      password: hashedPassword,
       role: role || SystemRole.USER,
     });
 
@@ -110,7 +109,7 @@ const handleUpdateUser = async (formData: FormData) => {
     );
     return data(
       {
-        error: "Thiếu các trường bắt buộc: userId, tên và email là bắt buộc",
+        error: "Required fields: userId, full name and email are mandatory",
       },
       { status: 400 },
     );
@@ -122,14 +121,14 @@ const handleUpdateUser = async (formData: FormData) => {
     return data({ error: "User not found" }, { status: 400 });
   }
 
-  // Kiểm tra trong db đã có ngừoi nào dùng email này chưa
+  // Check if email is already used by another user in db
   const isEmailExists = await userRepository.findOne({
     email,
     id: { not: userId },
   });
   if (isEmailExists) {
     logger.warn({ email }, "User update failed: email already exists");
-    return data({ error: "Email đã tồn tại" }, { status: 400 });
+    return data({ error: "Email already exists" }, { status: 400 });
   }
 
   try {
@@ -144,9 +143,8 @@ const handleUpdateUser = async (formData: FormData) => {
       role,
     };
     if (password) {
-      const salt = await bcrypt.genSalt(Number(process.env.BCRYPT_SALT_ROUNDS));
-      const hashPassword = await bcrypt.hash(password, salt);
-      updateData.password = hashPassword;
+      const hashedPassword = await hashPassword(password);
+      updateData.password = hashedPassword;
     }
 
     const user = await userRepository.update(userId, updateData);

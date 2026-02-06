@@ -54,9 +54,9 @@ enum TaskPriority {
 }
 
 enum ApprovalType {
-  ANY // Bất kỳ reviewer nào approve thì sẽ set task được hoàn thành
-  ALL // Tất cả reviewer approve thì task mới được hoàn thành
-  MAJORITY // approved > rejected hoàn thành và ngược lại
+  ANY // Any reviewer approves will set task as completed
+  ALL // All reviewers must approve for task to be completed
+  MAJORITY // approved > rejected task completed and vice versa
 }
 
 enum CollaboratorRole {
@@ -182,12 +182,12 @@ model Task {
   status                TaskStatus
   priority              TaskPriority
   assigneeId            String       @map("assignee_id")
-  parentTaskId          String?      @map("parent_task_id") // Task cha
+  parentTaskId          String?      @map("parent_task_id") // Parent task
   isParent              Boolean      @default(false) @map("is_parent")
   subTaskCount          Int          @default(0) @map("subtask_count")
   completedSubTaskCount Int          @default(0) @map("completed_subtask_count")
   approvalType          ApprovalType @map("approval_type")
-  approvalCount         Int          @map("approval_count") // Số lượng tối thiểu approve để done task
+  approvalCount         Int          @map("approval_count") // Minimum number of approvals required to complete task
   createdBy             String       @map("created_by")
   startDate             DateTime     @map("start_date") @db.Date()
   dueDate               DateTime     @map("due_date") @db.Date()

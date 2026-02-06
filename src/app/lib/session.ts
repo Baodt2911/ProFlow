@@ -9,7 +9,7 @@ export const sessionStorage = createCookieSessionStorage({
     secure: process.env.NODE_ENV === "production",
     secrets: [process.env.SESSION_SECRET!],
     path: "/",
-    maxAge: 60 * 60 * 24 * 7, // 7 ngày
+    maxAge: 60 * 60 * 24 * 7, // 7 days
   },
 });
 

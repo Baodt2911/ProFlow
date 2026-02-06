@@ -1,3 +1,4 @@
+import { hashPassword } from "./../utils/hashPassword";
 import { userRepository } from "~/repositories/userRepository";
 import bcrypt from "bcrypt";
 import { UserCreateInput } from "generated/prisma/models";
@@ -23,21 +24,21 @@ export const userService = {
   async register(input: RegisterInput) {
     const existingUser = await userRepository.findByEmail(input.email);
     if (existingUser) {
-      throw new Error("Email đã được sử dụng");
+      throw new Error("Email already in use");
     }
-    const salt = await bcrypt.genSalt(Number(process.env.BCRYPT_SALT_ROUNDS));
-    const hashPassword = await bcrypt.hash(input.password, salt);
+
+    const hashedPassword = await hashPassword(input.password);
 
     return userRepository.create({
       fullName: input.fullName,
       email: input.email,
-      password: hashPassword,
+      password: hashedPassword,
     });
   },
   async login(input: LoginInput) {
     const existingUser = await userRepository.findByEmail(input.email);
     if (!existingUser) {
-      throw new Error("Email không tồn tại");
+      throw new Error("Email does not exist");
     }
 
     const isPassword = await bcrypt.compare(
@@ -45,7 +46,7 @@ export const userService = {
       existingUser.password,
     );
     if (!isPassword) {
-      throw new Error("Mật khẩu không đúng");
+      throw new Error("Incorrect password");
     }
     const { password, googleId, ...other } = existingUser;
     return other;
@@ -100,17 +101,16 @@ export const userService = {
   ) {
     const user = await userRepository.findById(userId);
     if (!user) {
-      throw new Error("Người dùng không tồn tại");
+      throw new Error("User does not exist");
     }
 
     const isPassword = await bcrypt.compare(currentPassword, user.password);
     if (!isPassword) {
-      throw new Error("Mật khẩu hiện tại không đúng");
+      throw new Error("Current password is incorrect");
     }
 
-    const salt = await bcrypt.genSalt(Number(process.env.BCRYPT_SALT_ROUNDS));
-    const hashPassword = await bcrypt.hash(newPassword, salt);
+    const hashedPassword = await hashPassword(newPassword);
 
-    return userRepository.update(userId, { password: hashPassword });
+    return userRepository.update(userId, { password: hashedPassword });
   },
 };

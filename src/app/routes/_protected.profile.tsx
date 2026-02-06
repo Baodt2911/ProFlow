@@ -31,7 +31,7 @@ import type { GetProp, UploadProps } from "antd";
 export { profileLoader as loader } from "~/loaders/profileLoader";
 export { profileAction as action } from "~/actions/profileAction";
 export const meta = () => {
-  return [{ title: "Hồ sơ cá nhân" }];
+  return [{ title: "User Profile" }];
 };
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
@@ -50,14 +50,14 @@ export default function ProfilePage() {
     if (!isJpgOrPng) {
       messageApi.open({
         type: "error",
-        content: "Bạn chỉ có thể tải lên file JPG/PNG!",
+        content: "You can only upload JPG/PNG files!",
       });
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
       messageApi.open({
         type: "error",
-        content: "Ảnh phải nhỏ hơn 2MB!",
+        content: "Image must be smaller than 2MB!",
       });
     }
     return isJpgOrPng && isLt2M;
@@ -96,11 +96,11 @@ export default function ProfilePage() {
     <>
       {contextHolder}
       <Card
-        title="Hồ sơ cá nhân"
+        title="User Profile"
         variant="borderless"
         style={{ width: "80%", padding: 20, margin: "0 auto" }}
       >
-        {/* Header với Avatar */}
+        {/* Header with Avatar */}
         <Flex gap="middle" align="center">
           <div
             style={{
@@ -121,7 +121,7 @@ export default function ProfilePage() {
                   formData.append("oldAvatar", user.avatarUrl);
                   submit(formData, {
                     method: "POST",
-                    encType: "multipart/form-data", // Quan trọng!
+                    encType: "multipart/form-data", // Important!
                   });
 
                   if (actionData?.success) {
@@ -157,7 +157,7 @@ export default function ProfilePage() {
           </div>
           <div>
             <Typography.Title level={3} style={{ margin: 0 }}>
-              Đỗ Trọng Bảo
+              Bao Do Trong
             </Typography.Title>
             <Typography.Text type="secondary">
               example@gmail.com
@@ -167,16 +167,16 @@ export default function ProfilePage() {
 
         <Divider />
 
-        {/* Form thông tin cá nhân */}
+        {/* Personal Information Form */}
         <Card
-          title="Thông tin cá nhân"
+          title="Personal Information"
           extra={
             <Button
               type="link"
               icon={<EditOutlined />}
               onClick={() => setIsEditingProfile(false)}
             >
-              Sửa hồ sơ
+              Edit Profile
             </Button>
           }
           style={{ marginBottom: 24 }}
@@ -191,12 +191,12 @@ export default function ProfilePage() {
               <input type="hidden" name="action" value="profile" />
               <Row gutter={16}>
                 <Col span={12}>
-                  <Form.Item label="Họ và tên" name="fullName">
+                  <Form.Item label="Full Name" name="fullName">
                     <Input size="large" name="fullName" />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <Form.Item label="Địa chỉ" name="address">
+                  <Form.Item label="Address" name="address">
                     <Input size="large" name="address" />
                   </Form.Item>
                 </Col>
@@ -209,13 +209,13 @@ export default function ProfilePage() {
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <Form.Item label="Số điện thoại" name="phone">
+                  <Form.Item label="Phone Number" name="phone">
                     <Input size="large" name="phone" />
                   </Form.Item>
                 </Col>
               </Row>
 
-              {/* Nút hiện khi đang chỉnh sửa */}
+              {/* Button shown when editing */}
               <Form.Item
                 style={{ display: isEditingProfile ? "none" : "block" }}
               >
@@ -225,7 +225,7 @@ export default function ProfilePage() {
                     icon={<CloseOutlined />}
                     onClick={() => setIsEditingProfile(true)}
                   >
-                    Hủy
+                    Cancel
                   </Button>
                   <Button
                     type="primary"
@@ -233,7 +233,7 @@ export default function ProfilePage() {
                     size="large"
                     icon={<SaveOutlined />}
                   >
-                    Lưu thay đổi
+                    Save Changes
                   </Button>
                 </Space>
               </Form.Item>
@@ -241,27 +241,27 @@ export default function ProfilePage() {
           </RemixForm>
         </Card>
 
-        {/* Form đổi mật khẩu */}
-        <Card title="Đổi mật khẩu">
+        {/* Password Change Form */}
+        <Card title="Change Password">
           <RemixForm method="post">
             <input type="hidden" name="action" value="password" />
             <Form layout="vertical" component={false} form={passwordForm}>
               <Row gutter={16}>
                 <Col span={24}>
                   <Form.Item
-                    label="Mật khẩu hiện tại"
+                    label="Current Password"
                     name="currentPassword"
                     rules={[
                       {
                         required: true,
-                        message: "Vui lòng nhập mật khẩu hiện tại",
+                        message: "Please enter current password",
                       },
                     ]}
                   >
                     <Input.Password
                       size="large"
                       name="currentPassword"
-                      placeholder="Nhập mật khẩu hiện tại"
+                      placeholder="Enter current password"
                     />
                   </Form.Item>
                 </Col>
@@ -270,35 +270,35 @@ export default function ProfilePage() {
               <Row gutter={16}>
                 <Col span={12}>
                   <Form.Item
-                    label="Mật khẩu mới"
+                    label="New Password"
                     name="newPassword"
                     rules={[
                       {
                         required: true,
-                        message: "Vui lòng nhập mật khẩu mới",
+                        message: "Please enter new password",
                       },
                       {
                         min: 6,
-                        message: "Mật khẩu phải có ít nhất 6 ký tự",
+                        message: "Password must be at least 6 characters",
                       },
                     ]}
                   >
                     <Input.Password
                       size="large"
                       name="newPassword"
-                      placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)"
+                      placeholder="Enter new password (minimum 6 characters)"
                     />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
                   <Form.Item
-                    label="Xác nhận mật khẩu"
+                    label="Confirm Password"
                     name="confirmPassword"
-                    dependencies={["newPassword"]} // Quan trọng!
+                    dependencies={["newPassword"]} // Important!
                     rules={[
                       {
                         required: true,
-                        message: "Vui lòng xác nhận mật khẩu",
+                        message: "Please confirm password",
                       },
                       ({ getFieldValue }) => ({
                         validator(_, value) {
@@ -309,7 +309,7 @@ export default function ProfilePage() {
                             return Promise.resolve();
                           }
                           return Promise.reject(
-                            new Error("Mật khẩu xác nhận không khớp!"),
+                            new Error("Passwords do not match!"),
                           );
                         },
                       }),
@@ -318,7 +318,7 @@ export default function ProfilePage() {
                     <Input.Password
                       size="large"
                       name="confirmPassword"
-                      placeholder="Nhập lại mật khẩu mới"
+                      placeholder="Re-enter new password"
                     />
                   </Form.Item>
                 </Col>
@@ -331,7 +331,7 @@ export default function ProfilePage() {
                   size="large"
                   icon={<LockOutlined />}
                 >
-                  Đổi mật khẩu
+                  Change Password
                 </Button>
               </Form.Item>
             </Form>

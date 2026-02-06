@@ -32,12 +32,12 @@ const menuItems = [
   {
     key: "dashboard",
     icon: <HomeFilled />,
-    label: `Tổng quan`,
+    label: `Overview`,
   },
   {
     key: "project",
     icon: <ProjectOutlined />,
-    label: `Dự án`,
+    label: `Projects`,
   },
   {
     key: "task",
@@ -47,12 +47,12 @@ const menuItems = [
   {
     key: "calendar",
     icon: <CalendarOutlined />,
-    label: `Lịch`,
+    label: `Calendar`,
   },
   {
     key: "profile",
     icon: <UserOutlined />,
-    label: `Hồ sơ cá nhân`,
+    label: `Profile`,
   },
 ];
 export default function ProtectedLayout() {
@@ -71,7 +71,7 @@ export default function ProtectedLayout() {
       menuItems.push({
         key: "management-user",
         icon: <UsergroupAddOutlined />,
-        label: "Quản lý người dùng",
+        label: "User Management",
       });
     }
   }
@@ -150,7 +150,7 @@ export default function ProtectedLayout() {
         >
           <Form method="post" action="/logout" style={{ marginRight: 20 }}>
             <Button htmlType="submit" color="danger" variant="outlined">
-              Đăng xuất
+              Logout
             </Button>
           </Form>
         </Header>

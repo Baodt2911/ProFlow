@@ -9,12 +9,12 @@ export async function registerAction({ request }: ActionFunctionArgs) {
     const password = formData.get("password") as string;
 
     if (!fullName) {
-      return data({ error: "Tên không được để trống" }, { status: 400 });
+      return data({ error: "Full name is required" }, { status: 400 });
     }
 
     if (!email || !password) {
       return data(
-        { error: "Email và mật khẩu không được để trống" },
+        { error: "Email and password are required" },
         { status: 400 },
       );
     }
@@ -25,7 +25,7 @@ export async function registerAction({ request }: ActionFunctionArgs) {
     });
     return data({
       success: true,
-      message: "Đăng ký thành công",
+      message: "Registration successful",
     });
   } catch (error: any) {
     if (error) {
@@ -34,6 +34,9 @@ export async function registerAction({ request }: ActionFunctionArgs) {
 
     // fallback
     console.error(error);
-    return data({ error: "Có lỗi xảy ra, vui lòng thử lại" }, { status: 500 });
+    return data(
+      { error: "An error occurred, please try again" },
+      { status: 500 },
+    );
   }
 }

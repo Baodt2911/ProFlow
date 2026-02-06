@@ -9,7 +9,7 @@ import ROUTES from "~/constants/route";
 import { redirectIfAuthenticated } from "~/utils/auth.server";
 export { loginAction as action } from "~/actions/loginAction";
 export const meta = () => {
-  return [{ title: "Đăng nhập" }];
+  return [{ title: "Login" }];
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -44,7 +44,7 @@ export default function LoginPage() {
             fontWeight: 600,
           }}
         >
-          Đăng nhập
+          Login
         </Typography.Title>
 
         <RemixForm method="post">
@@ -53,8 +53,8 @@ export default function LoginPage() {
               label="Email"
               name="email"
               rules={[
-                { required: true, message: "Vui lòng nhập email" },
-                { type: "email", message: "Email không hợp lệ" },
+                { required: true, message: "Please enter email" },
+                { type: "email", message: "Email is invalid" },
               ]}
             >
               <Input
@@ -65,14 +65,14 @@ export default function LoginPage() {
             </Form.Item>
 
             <Form.Item
-              label="Mật khẩu"
+              label="Password"
               name="password"
-              rules={[{ required: true, message: "Vui lòng nhập mật khẩu" }]}
+              rules={[{ required: true, message: "Please enter password" }]}
             >
               <Input.Password
                 name="password"
                 size="large"
-                placeholder="Nhập mật khẩu"
+                placeholder="Enter password"
               />
             </Form.Item>
 
@@ -87,7 +87,7 @@ export default function LoginPage() {
 
             <Form.Item style={{ marginBottom: 16 }}>
               <Button type="primary" htmlType="submit" size="large" block>
-                Đăng nhập
+                Login
               </Button>
             </Form.Item>
           </Form>
@@ -95,9 +95,9 @@ export default function LoginPage() {
 
         <div style={{ textAlign: "center", marginTop: 16 }}>
           <Typography.Text type="secondary">
-            Chưa có tài khoản?{" "}
+            Don't have an account?{" "}
             <Link to={ROUTES.REGISTER} style={{ fontWeight: 500 }}>
-              Đăng ký ngay
+              Register now
             </Link>
           </Typography.Text>
         </div>

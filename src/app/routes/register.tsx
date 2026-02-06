@@ -19,7 +19,7 @@ import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 export { registerAction as action } from "~/actions/registerAction";
 
 export const meta = () => {
-  return [{ title: "Đăng ký" }];
+  return [{ title: "Register" }];
 };
 export async function loader({ request }: LoaderFunctionArgs) {
   await redirectIfAuthenticated(request);
@@ -75,20 +75,20 @@ export default function RegisterPage() {
             fontWeight: 600,
           }}
         >
-          Đăng ký
+          Register
         </Typography.Title>
 
         <RemixForm method="post">
           <Form layout="vertical" component={false}>
             <Form.Item
-              label="Họ và tên"
+              label="Full Name"
               name="fullName"
-              rules={[{ required: true, message: "Vui lòng nhập họ tên" }]}
+              rules={[{ required: true, message: "Please enter full name" }]}
             >
               <Input
                 name="fullName"
                 size="large"
-                placeholder="Nhập họ và tên"
+                placeholder="Enter full name"
               />
             </Form.Item>
 
@@ -96,8 +96,8 @@ export default function RegisterPage() {
               label="Email"
               name="email"
               rules={[
-                { required: true, message: "Vui lòng nhập email" },
-                { type: "email", message: "Email không hợp lệ" },
+                { required: true, message: "Please enter email" },
+                { type: "email", message: "Email is invalid" },
               ]}
             >
               <Input
@@ -108,23 +108,23 @@ export default function RegisterPage() {
             </Form.Item>
 
             <Form.Item
-              label="Mật khẩu"
+              label="Password"
               name="password"
               rules={[
-                { required: true, message: "Vui lòng nhập mật khẩu" },
-                { min: 6, message: "Mật khẩu tối thiểu 6 ký tự" },
+                { required: true, message: "Please enter password" },
+                { min: 6, message: "Password must be at least 6 characters" },
               ]}
             >
               <Input.Password
                 name="password"
                 size="large"
-                placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)"
+                placeholder="Enter password (at least 6 characters)"
               />
             </Form.Item>
 
             <Form.Item style={{ marginBottom: 16 }}>
               <Button type="primary" htmlType="submit" size="large" block>
-                Đăng ký
+                Register
               </Button>
             </Form.Item>
           </Form>
@@ -132,9 +132,9 @@ export default function RegisterPage() {
 
         <div style={{ textAlign: "center", marginTop: 16 }}>
           <Typography.Text type="secondary">
-            Đã có tài khoản?{" "}
+            Already have an account?{" "}
             <Link to={ROUTES.LOGIN} style={{ fontWeight: 500 }}>
-              Đăng nhập ngay
+              Login now
             </Link>
           </Typography.Text>
         </div>

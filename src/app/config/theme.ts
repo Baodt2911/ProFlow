@@ -3,7 +3,7 @@ export const lightTheme = {
     fontFamily: "Roboto, system-ui, sans-serif",
 
     /* Brand */
-    colorPrimary: "#1D4ED8", // xanh đậm, ít chói hơn #1677FF
+    colorPrimary: "#1D4ED8", // dark blue, less bright than #1677FF
     colorInfo: "#1D4ED8",
     colorSuccess: "#2DA44E",
     colorWarning: "#BF8700",
@@ -11,7 +11,7 @@ export const lightTheme = {
 
     /* Background */
     colorBgBase: "#FFFFFF",
-    colorBgLayout: "#F7F8FA", // nền xám xanh rất nhẹ
+    colorBgLayout: "#F7F8FA", // very light grayish-blue background
     colorBgContainer: "#FFFFFF",
     colorBgElevated: "#FFFFFF",
 

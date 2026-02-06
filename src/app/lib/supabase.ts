@@ -2,5 +2,5 @@ import { createClient } from "@supabase/supabase-js";
 
 export const supabase = createClient(
   process.env.SUPABASE_URL!,
-  process.env.SUPABASE_KEY!, // dùng key này ở server
+  process.env.SUPABASE_KEY!, // use this key on server
 );

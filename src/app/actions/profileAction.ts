@@ -39,7 +39,7 @@ const handleUpdateProfile = async (formData: FormData, userId: string) => {
     );
     return data(
       {
-        error: "Thiếu các trường bắt buộc: tên, email  là bắt buộc",
+        error: "Missing required fields: name and email are required",
       },
       { status: 400 },
     );
@@ -56,7 +56,7 @@ const handleUpdateProfile = async (formData: FormData, userId: string) => {
 
     return data({
       success: true,
-      message: "Cập nhật hồ sơ thành công",
+      message: "Profile updated successfully",
     });
   } catch (error) {
     const errorMessage =
@@ -105,7 +105,7 @@ const handleUpdateAvatar = async (formData: FormData, userId: string) => {
 
     return data({
       success: true,
-      message: "Cập nhật ảnh đại diện thành công",
+      message: "Avatar updated successfully",
     });
   } catch (error) {
     const errorMessage =
@@ -128,7 +128,7 @@ const handleChangePassword = async (formData: FormData, userId: string) => {
 
     return data({
       success: true,
-      message: "Đổi mật khẩu thành công",
+      message: "Password changed successfully",
     });
   } catch (error) {
     const errorMessage =

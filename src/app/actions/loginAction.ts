@@ -9,10 +9,9 @@ export async function loginAction({ request }: ActionFunctionArgs) {
 
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    console.log({ email, password });
     if (!email || !password) {
       return data(
-        { error: "Email và mật khẩu không được để trống" },
+        { error: "Email and password are required" },
         { status: 400 },
       );
     }
@@ -21,7 +20,7 @@ export async function loginAction({ request }: ActionFunctionArgs) {
     if (user.isBlocked) {
       return data(
         {
-          error: `Tài khoản của bạn đã bị khóa bởi ${user.blockedByUser?.fullName}`,
+          error: `Your account has been blocked by ${user.blockedByUser?.fullName}`,
         },
         { status: 400 },
       );
@@ -42,6 +41,9 @@ export async function loginAction({ request }: ActionFunctionArgs) {
 
     // fallback
     logger.error({ err: error }, "Error in login action");
-    return data({ error: "Có lỗi xảy ra, vui lòng thử lại" }, { status: 500 });
+    return data(
+      { error: "An error occurred, please try again" },
+      { status: 500 },
+    );
   }
 }
