@@ -12,6 +12,7 @@ export default [
   layout(`${ROUTE_FOLDER}/_protected.tsx`, [
     index(`${ROUTE_FOLDER}/_protected._index.tsx`),
     route("management-user", `${ROUTE_FOLDER}/_protected.managementUser.tsx`),
+    route("profile", `${ROUTE_FOLDER}/_protected.profile.tsx`),
   ]),
   route("login", `${ROUTE_FOLDER}/login.tsx`),
   route("register", `${ROUTE_FOLDER}/register.tsx`),

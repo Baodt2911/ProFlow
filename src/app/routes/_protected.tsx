@@ -13,8 +13,8 @@ import {
   FundProjectionScreenOutlined,
   HomeFilled,
   ProjectOutlined,
-  SettingOutlined,
-  UserSwitchOutlined,
+  UsergroupAddOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { requireUser } from "~/utils/auth.server";
 import { Button, Flex, Layout, Menu, theme, Typography } from "antd";
@@ -50,9 +50,9 @@ const menuItems = [
     label: `Lịch`,
   },
   {
-    key: "setting",
-    icon: <SettingOutlined />,
-    label: `Cài đặt`,
+    key: "profile",
+    icon: <UserOutlined />,
+    label: `Hồ sơ cá nhân`,
   },
 ];
 export default function ProtectedLayout() {
@@ -70,7 +70,7 @@ export default function ProtectedLayout() {
     if (!existingItem) {
       menuItems.push({
         key: "management-user",
-        icon: <UserSwitchOutlined />,
+        icon: <UsergroupAddOutlined />,
         label: "Quản lý người dùng",
       });
     }
@@ -86,6 +86,7 @@ export default function ProtectedLayout() {
         onCollapse={(collapsed, type) => {
           console.log(collapsed, type);
         }}
+        suppressHydrationWarning={true}
       >
         <Flex
           style={{
@@ -128,9 +129,9 @@ export default function ProtectedLayout() {
                 setSelectedKey(key);
                 navigate("calendar");
                 break;
-              case "setting":
+              case "profile":
                 setSelectedKey(key);
-                navigate("setting");
+                navigate("profile");
                 break;
               default:
                 break;

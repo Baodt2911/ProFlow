@@ -87,8 +87,7 @@ const handleCreateUser = async (formData: FormData) => {
     logger.error({ err: error, fullName, email }, "User creation failed");
     return data(
       {
-        error: "server_error",
-        error_description: errorMessage,
+        error: errorMessage,
       },
       { status: 500 },
     );
@@ -167,8 +166,7 @@ const handleUpdateUser = async (formData: FormData) => {
 
     return data(
       {
-        error: "server_error",
-        error_description: errorMessage,
+        error: errorMessage,
       },
       { status: 500 },
     );
@@ -196,8 +194,7 @@ const handleDeleteUser = async (formData: FormData, adminId: string) => {
 
     return data(
       {
-        error: "server_error",
-        error_description: errorMessage,
+        error: errorMessage,
       },
       { status: 500 },
     );
@@ -226,8 +223,7 @@ const handleBlockUser = async (formData: FormData, adminId: string) => {
 
     return data(
       {
-        error: "server_error",
-        error_description: errorMessage,
+        error: errorMessage,
       },
       { status: 500 },
     );
@@ -256,8 +252,7 @@ const handleUnblockUser = async (formData: FormData, adminId: string) => {
 
     return data(
       {
-        error: "server_error",
-        error_description: errorMessage,
+        error: errorMessage,
       },
       { status: 500 },
     );

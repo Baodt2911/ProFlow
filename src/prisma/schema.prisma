@@ -87,6 +87,7 @@ model User {
   email       String     @unique @db.VarChar(255)
   password    String     @map("password") @db.VarChar(255)
   fullName    String     @map("full_name") @db.VarChar(100)
+  address     String?    @db.VarChar(255)
   avatarUrl   String?    @map("avatar_url") @db.Text
   googleId    String?    @unique @map("google_id") @db.VarChar(255)
   role        SystemRole @default(USER)
