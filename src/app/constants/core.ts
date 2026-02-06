@@ -2,8 +2,12 @@
  * Core constants used throughout the application
  */
 
-export type SystemRole = "ADMIN" | "USER";
-export type ProjectRole = "ADMIN" | "TEAM_LEAD" | "MEMBER" | "PM";
+export const ROLES = {
+  ADMIN: "admin",
+  USER: "user",
+} as const;
+
+export type Role = (typeof ROLES)[keyof typeof ROLES];
 
 export const PAGINATION = {
   DEFAULT_PAGE_SIZE: 10,

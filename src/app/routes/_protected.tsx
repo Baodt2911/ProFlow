@@ -4,6 +4,7 @@ import {
   LoaderFunctionArgs,
   Outlet,
   useLoaderData,
+  useLocation,
   useNavigate,
 } from "react-router";
 import {
@@ -15,12 +16,15 @@ import {
   SettingOutlined,
   UserSwitchOutlined,
 } from "@ant-design/icons";
-import { requireUser } from "~/utils/authServer";
+import { requireUser } from "~/utils/auth.server";
 import { Button, Flex, Layout, Menu, theme, Typography } from "antd";
 import { getSession } from "~/lib/session";
+import { SystemRole } from "~/types";
 export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await getSession(request.headers.get("Cookie"));
+  const role = session.get("role");
   await requireUser(request);
-  return null;
+  return { role };
 }
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -52,17 +56,25 @@ const menuItems = [
   },
 ];
 export default function ProtectedLayout() {
+  const location = useLocation();
   const {
-    token: {
-      colorBgLayout,
-      colorBgBase,
-      colorBgContainer,
-      colorBgElevated,
-      colorTextBase,
-    },
+    token: { colorBgContainer, colorTextBase },
   } = theme.useToken();
-  const [selectedKey, setSelectedKey] = useState("dashboard");
+  const [selectedKey, setSelectedKey] = useState(
+    location.pathname.split("/")[0],
+  );
   const navigate = useNavigate();
+  const { role } = useLoaderData<{ role: SystemRole }>();
+  if (role === "ADMIN") {
+    const existingItem = menuItems.find((m) => m.key === "management-user");
+    if (!existingItem) {
+      menuItems.push({
+        key: "management-user",
+        icon: <UserSwitchOutlined />,
+        label: "Quản lý người dùng",
+      });
+    }
+  }
   return (
     <Layout style={{ width: "100%", minHeight: "100vh" }}>
       <Sider

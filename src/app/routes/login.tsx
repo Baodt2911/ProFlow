@@ -4,10 +4,10 @@ import {
   Form as RemixForm,
   useActionData,
 } from "react-router";
-import { Form, Input, Button, Card, Typography } from "antd";
+import { Form, Input, Button, Card, Typography, Alert } from "antd";
 import ROUTES from "~/constants/route";
-import { redirectIfAuthenticated } from "~/utils/authServer";
-export { loginAction as action } from "~/actions/login";
+import { redirectIfAuthenticated } from "~/utils/auth.server";
+export { loginAction as action } from "~/actions/loginAction";
 export const meta = () => {
   return [{ title: "Đăng nhập" }];
 };
@@ -26,45 +26,81 @@ export default function LoginPage() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       }}
     >
-      <Card style={{ width: 360 }}>
-        <Typography.Title level={3} style={{ textAlign: "center" }}>
+      <Card
+        style={{
+          width: 420,
+          boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
+          borderRadius: 16,
+        }}
+      >
+        <Typography.Title
+          level={2}
+          style={{
+            textAlign: "center",
+            marginBottom: 32,
+            fontWeight: 600,
+          }}
+        >
           Đăng nhập
         </Typography.Title>
 
         <RemixForm method="post">
           <Form layout="vertical" component={false}>
-            <Form.Item label="Email" rules={[{ required: true }]}>
-              <Input name="email" />
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[
+                { required: true, message: "Vui lòng nhập email" },
+                { type: "email", message: "Email không hợp lệ" },
+              ]}
+            >
+              <Input
+                name="email"
+                size="large"
+                placeholder="example@email.com"
+              />
             </Form.Item>
 
-            <Form.Item label="Mật khẩu" rules={[{ required: true }]}>
-              <Input.Password name="password" />
+            <Form.Item
+              label="Mật khẩu"
+              name="password"
+              rules={[{ required: true, message: "Vui lòng nhập mật khẩu" }]}
+            >
+              <Input.Password
+                name="password"
+                size="large"
+                placeholder="Nhập mật khẩu"
+              />
             </Form.Item>
 
             {actionData?.error && (
-              <Typography.Text type="danger">
-                {actionData.error}
-              </Typography.Text>
+              <Alert
+                message={actionData.error}
+                type="error"
+                showIcon
+                style={{ marginBottom: 16 }}
+              />
             )}
 
-            <Form.Item style={{ marginTop: 16 }}>
-              <Button type="primary" htmlType="submit" block>
+            <Form.Item style={{ marginBottom: 16 }}>
+              <Button type="primary" htmlType="submit" size="large" block>
                 Đăng nhập
               </Button>
             </Form.Item>
           </Form>
         </RemixForm>
-        <Typography.Text>
-          Chưa có tài khoản?{" "}
-          <Link
-            to={ROUTES.REGISTER}
-            className="ant-typography ant-typography-link"
-          >
-            Đăng ký
-          </Link>
-        </Typography.Text>
+
+        <div style={{ textAlign: "center", marginTop: 16 }}>
+          <Typography.Text type="secondary">
+            Chưa có tài khoản?{" "}
+            <Link to={ROUTES.REGISTER} style={{ fontWeight: 500 }}>
+              Đăng ký ngay
+            </Link>
+          </Typography.Text>
+        </div>
       </Card>
     </div>
   );
