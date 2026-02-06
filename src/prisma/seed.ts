@@ -3,7 +3,7 @@ import { SystemRole } from "generated/prisma/enums";
 import bcrypt from "bcrypt";
 const adminUser = {
   fullName: "Admin",
-  email: "admin@example.com",
+  email: "admin@gmail.com",
   password: "dev@123456",
   role: SystemRole.ADMIN,
 };

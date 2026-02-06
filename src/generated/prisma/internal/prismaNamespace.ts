@@ -1201,6 +1201,10 @@ export const UserScalarFieldEnum = {
   avatarUrl: 'avatarUrl',
   googleId: 'googleId',
   role: 'role',
+  isBlocked: 'isBlocked',
+  blockReason: 'blockReason',
+  blockedAt: 'blockedAt',
+  blockedBy: 'blockedBy',
   createdAt: 'createdAt',
   updateAt: 'updateAt'
 } as const
@@ -1425,6 +1429,13 @@ export type ListEnumSystemRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -1505,13 +1516,6 @@ export type EnumTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'TaskPriority[]'
  */
 export type ListEnumTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskPriority[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
